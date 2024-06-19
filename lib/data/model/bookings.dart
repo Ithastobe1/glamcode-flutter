@@ -106,13 +106,11 @@ class OngoingBookingsArr {
   OngoingBookingsArr.fromJson(dynamic json) {
     userName = json['user_name'];
     bookingId = json['booking_id'];
-
     bookingAssigned = json['bookingAssigned'];
     assignedBookingID = json['assignedBookingID'];
     beauticianID = json['beauticianID'];
     beauticianName = json['beautician_name'];
     beauticianPhone = json['beautician_phone'];
-
     bookingOrderDate = json['booking_order_date'];
     bookingDate = json['booking_date'];
     bookingTime = json['booking_time'];
@@ -181,11 +179,11 @@ class OngoingBookingsArr {
       OngoingBookingsArr(
         userName: userName ?? this.userName,
         bookingId: bookingId ?? this.bookingId,
-        bookingAssigned: bookingAssigned ?? this.bookingAssigned,
-        assignedBookingID: assignedBookingID ?? this.assignedBookingID,
-        beauticianID: beauticianID ?? this.beauticianID,
-        beauticianName: beauticianName ?? this.beauticianName,
-        beauticianPhone: beauticianPhone ?? this.beauticianPhone,
+        bookingAssigned: bookingAssigned ?? bookingAssigned,
+        assignedBookingID: assignedBookingID ?? assignedBookingID,
+        beauticianID: beauticianID ?? beauticianID,
+        beauticianName: beauticianName ?? beauticianName,
+        beauticianPhone: beauticianPhone ?? beauticianPhone,
         bookingOrderDate: bookingOrderDate ?? this.bookingOrderDate,
         bookingDate: bookingDate ?? this.bookingDate,
         bookingTime: bookingTime ?? this.bookingTime,

@@ -8,7 +8,6 @@ class Auth {
   }
 
   late Future<User> _doneFuture;
-  
 
   Future<User> init() async {
     prefs = await SharedPreferences.getInstance();

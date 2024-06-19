@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +26,7 @@ import 'package:glamcode/view/screens/payment/payment_screen.dart';
 import 'package:glamcode/view/screens/privacy_policy/privacy_policy_screen.dart';
 import 'package:glamcode/view/screens/select_booking/select_booking_screen.dart';
 import 'package:glamcode/view/screens/terms_and_conditions/terms_and_conditions_screen.dart';
-import 'package:http/http.dart' as http;
-import 'package:package_info/package_info.dart';
+import 'package:glamcode/view/screens/update/update_screen.dart';
 import 'package:upgrader/upgrader.dart';
 import 'blocs/auth/auth_bloc.dart';
 import 'data/api/api_helper.dart';
@@ -36,7 +35,6 @@ import 'data/repository/user_repository.dart';
 import 'home.dart';
 import 'main.dart';
 import 'util/delete_my_account.dart';
-import 'view/screens/update/update_screen.dart';
 
 class MyApp extends StatefulWidget {
   final UserRepository userRepository;
@@ -63,7 +61,8 @@ class _MyAppState extends State<MyApp> {
   final cfg = AppcastConfiguration(
     url:
         'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml',
-    supportedOS: ['android', 'ios'], );
+    supportedOS: ['android', 'ios'],
+  );
   late AuthBloc authBloc;
   late CartBloc cartBloc;
   late CartDataBloc cartDataBloc;
@@ -82,9 +81,11 @@ class _MyAppState extends State<MyApp> {
   late String token;
 
   getToken() async {
-    token = await FirebaseMessaging.instance.getToken() ?? "";
-    print(
-        "-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=->$token");
+    await FirebaseMessaging.instance.getToken().then((value) {
+      print(
+          "toke-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=->$value");
+      DioClient.instance.fireToken(value);
+    });
   }
 
   // Future<void> printCurrentPackageInfo() async {
@@ -125,29 +126,36 @@ class _MyAppState extends State<MyApp> {
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      print("on massage-----${message.data}");
+      print("on rrr-----${message.notification!.title}");
+      print("on rrr-----${message.notification!.body}");
+      print("on massage-----${message.data}");
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        final http.Response response =
-            await http.get(Uri.parse(android.imageUrl ?? ""));
-        BigPictureStyleInformation bigPictureStyleInformation =
-            BigPictureStyleInformation(ByteArrayAndroidBitmap.fromBase64String(
-                base64Encode(response.bodyBytes)));
-
+      if (notification != null) {
+        print("on dddddd-----${message.data}");
+        // final http.Response response =
+        //     await http.get(Uri.parse(android.imageUrl ?? ""));
+        // BigPictureStyleInformation bigPictureStyleInformation =
+        //     BigPictureStyleInformation(ByteArrayAndroidBitmap.fromBase64String(
+        //         base64Encode(response.bodyBytes)));
         flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(channel.id, channel.name,
-                  channelDescription: channel.description,
-                  color: Colors.blue,
-                  icon: "@mipmap/ic_launcher",
-                  importance: Importance.high,
-                  priority: Priority.high,
-                  styleInformation: bigPictureStyleInformation),
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id, channel.name,
+              channelDescription: channel.description,
+              color: Colors.blue,
+              icon: "@mipmap/ic_launcher",
+              importance: Importance.high,
+              priority: Priority.high,
+              // styleInformation: bigPictureStyleInformation
             ),
-            payload: android.imageUrl);
+          ),
+          //payload: android.imageUrl
+        );
       }
     });
 
@@ -201,47 +209,40 @@ class _MyAppState extends State<MyApp> {
           dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch},
         ),
         theme: light(color: Colors.white),
-/*      theme: themeController.darkTheme
-          ? themeController.darkColor == null
-              ? dark()
-              : dark(color: themeController.darkColor ?? Colors.black54)
-          : themeController.lightColor == null
-              ? light()
-              : light(color: themeController.lightColor ?? Colors.white),*/
         routes: {
           '/': (context) => SplashScreen(
                 authBloc: authBloc,
               ),
-             // "/index": (context) =>
-              //     x
-              //         ? UpdateScreen(
-             //             authBloc: authBloc,
-             //           )
-              //         :
-              // UpgradeAlert(
-              //   child: Home(authBloc: authBloc),
-              //   upgrader: Upgrader(
-              //     dialogStyle: Platform.isIOS
-              //         ? UpgradeDialogStyle.cupertino
-              //         : UpgradeDialogStyle.material,
-              //     // appcastConfig: cfg,
-              //     debugLogging: true,
-              //     showLater: false,
-              //     showIgnore: false,
-              //     minAppVersion: '2.0.1',
-              //     shouldPopScope: () => false,
-              //     onIgnore: () => false,
-              //     onLater: () => false,
-              //     onUpdate: () => true,
-              //     // debugDisplayAlways: true,
-              //     canDismissDialog: false,
-              //   ),
-              // ),
+          // "/index": (context) => x
+          //     ? UpdateScreen(
+          //         authBloc: authBloc,
+          //       )
+          //     : UpgradeAlert(
+          //         upgrader: Upgrader(
+          //           dialogStyle: Platform.isIOS
+          //               ? UpgradeDialogStyle.cupertino
+          //               : UpgradeDialogStyle.material,
+          //           // appcastConfig: cfg,
+          //           debugLogging: true,
+          //           showLater: false,
+          //           showIgnore: false,
+          //           minAppVersion: '2.0.1',
+          //           shouldPopScope: () => false,
+          //           onIgnore: () => false,
+          //           onLater: () => false,
+          //           onUpdate: () => true,
+          //           // debugDisplayAlways: true,
+          //           canDismissDialog: false,
+          //         ),
+          //         child: Home(authBloc: authBloc),
+          //       ),
 
-           "/index": (context) =>UpgradeAlert(child: Home(authBloc: authBloc),),
-            // "/index": (context) => UpdateScreen(authBloc: authBloc,),
+          "/index": (context) => UpgradeAlert(
+                child: Home(authBloc: authBloc),
+              ),
+          // "/index": (context) => UpdateScreen(authBloc: authBloc,),
           "/dashboard": (context) => const DashboardScreen(pageIndex: 0),
-          "/home": (context) => const HomeScreen(),
+          "/home": (context) => UpgradeAlert(child: const HomeScreen()),
           "/location": (context) => const SelectLocationScreen(),
           "/terms": (context) => const TermsConditionsScreen(),
           "/about": (context) => const AboutScreen(),

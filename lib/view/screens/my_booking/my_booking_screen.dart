@@ -5,7 +5,6 @@ import 'package:glamcode/view/base/error_screen.dart';
 import 'package:glamcode/view/screens/my_booking/widget/booking_tile.dart';
 
 import '../../base/loading_screen.dart';
-import '../dashboard/dashboard_screen.dart';
 
 class MyBookingScreen extends StatefulWidget {
   const MyBookingScreen({Key? key}) : super(key: key);
@@ -42,13 +41,23 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
                   _future = DioClient.instance.getBookings();
                 });
               },
-              child: ListView.builder(
-                  itemCount: ongoingBookingsArrList.length,
-                  itemBuilder: (context, index) {
-                    return BookingTile(
-                      ongoingBookingsArr: ongoingBookingsArrList[index],
-                    );
-                  }),
+              child: ongoingBookingsArrList.isEmpty
+                  ? Center(
+                      child: Container(
+                        child: const Text(
+                          " Booking Not Found",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900, fontSize: 20),
+                        ),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: ongoingBookingsArrList.length,
+                      itemBuilder: (context, index) {
+                        return BookingTile(
+                          ongoingBookingsArr: ongoingBookingsArrList[index],
+                        );
+                      }),
             );
           } else {
             return const CustomError();

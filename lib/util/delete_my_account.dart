@@ -20,7 +20,7 @@ class _DeleteMyAccountState extends State<DeleteMyAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Delete Account"),
+        title: const Text("Delete Account"),
       ),
       body: Column(
         children: [

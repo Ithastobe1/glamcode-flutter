@@ -2,6 +2,19 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+class UserResponse extends Equatable{
+  final User? user;
+  final String message;
+  
+  @override
+  // TODO: implement props
+  List<Object?> get props => [user, message];
+
+
+  const UserResponse(this.user, this.message);
+  
+}
+
 class User extends Equatable {
   final int? id;
   final dynamic groupId;

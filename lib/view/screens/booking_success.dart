@@ -20,7 +20,6 @@ class BookingSuccessScreen extends StatefulWidget {
 class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
   late bool _showFrontSide;
   late bool _flipXAxis;
-  
 
   updatecon() {
     FirebaseAnalytics.instance.setCurrentScreen(
@@ -39,11 +38,11 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
     _flipXAxis = true;
     FacebookAppEvents facebookAppEvents = FacebookAppEvents();
     facebookAppEvents.logEvent(
-                    name: 'Confirmation Page',
-                    parameters: {
-                      'visited Confirmation Page': 'visited to Confirmation Page page',
-                    },
-                  );
+      name: 'Confirmation Page',
+      parameters: {
+        'visited Confirmation Page': 'visited to Confirmation Page page',
+      },
+    );
   }
 
   @override
@@ -53,14 +52,15 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
 
     return Scaffold(
       // backgroundColor: const Color.fromARGB(255, 249, 227, 235),
-      backgroundColor: Color.fromARGB(255, 255, 255, 255), // appBar: AppBar(
+      backgroundColor:
+          const Color.fromARGB(255, 255, 255, 255), // appBar: AppBar(
       //   automaticallyImplyLeading: false,
       //   title: const Text("Payment Confirmations"),
       // ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 100,
           ),
 
@@ -102,14 +102,16 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
             height: 50,
           ),
           if (bookingResponse.coupon?.points != null) ...[
+            const Text("Scratch here and win Points"),
             Container(
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(50)),
               child: Scratcher(
-                image: const Image(
-                  image: AssetImage(
-                    'assets/images/background.png',
-                  ),
+                color: Colors.purple,
+
+                image: Image.asset(
+                  "assets/images/outerimage.png",
+                  fit: BoxFit.fill,
                 ),
                 brushSize: 30,
                 threshold: 50,
@@ -122,7 +124,6 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                 },
                 onThreshold: () {
                   print("Threshold reached, you won!");
-                  
                 },
                 child: Container(
                   width: 200,
@@ -155,10 +156,10 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                       style: TextStyle(
                           fontSize: 70,
                           fontWeight: FontWeight.bold,
-                          color: const Color.fromARGB(255, 255, 255, 0)),
+                          color: Color.fromARGB(255, 255, 255, 0)),
                     ), //🎊🎁
                     const SizedBox(
-                      height: 15,
+                      height: 10,
                     ),
                     const Text(
                       "You've won",
@@ -253,8 +254,8 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                     semanticContainer: true,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
-                    color: Color.fromARGB(255, 250, 250, 250),
-                    child: Padding(
+                    color: const Color.fromARGB(255, 250, 250, 250),
+                    child: const Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                       child: Text("Done"),
@@ -279,19 +280,19 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
             ],
           ),
 
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 22),
-            child: Center(
-              child: Row(children: [
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
                 const Text(
                   "Refer your friend and earn cash",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 CupertinoButton(
-                    child: Text(
+                    child: const Text(
                       "Refer&Earn",
                       style: TextStyle(fontSize: 15, color: Colors.purple),
                     ),
@@ -303,8 +304,6 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                           (route) => false);
                     }),
               ]),
-            ),
-          ),
         ],
       ),
       // bottomNavigationBar: Container(

@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:core';
 
 import 'package:glamcode/data/model/packages_model/service.dart';
@@ -17,6 +19,7 @@ class AppConstants {
   static const String apiBlog = "https://glamcode.in/blog/wp-json/wp/v2/posts";
   static const String apiCategory = "$base_url/category";
   static const String apiLogin = "$base_url/send-otp-code";
+  static const String updateToken = "$base_url/update-device-token";
   static const String apiOtpVerify = "$base_url/verify-otp-phone";
   static const String updateProfile = "$base_url/profile/";
   static const String gallery = "$base_url/gallery";
@@ -28,7 +31,7 @@ class AppConstants {
   static const String editProfile = "$base_url/profile/"; //{id}
   static const String slotDetails = "$base_url/booking-slots/"; //{id}
   static const String slotLocationWiseDetails = "$base_url/time-slot/";
-  
+
   static const String addOrUpdateProduct = "$base_url/add-or-update-product";
   static const String deleteProduct = "$base_url/delete-cart-product";
   static const String updateCoupon = "$base_url/update-coupon";
@@ -57,8 +60,6 @@ class AppConstants {
   static const String bookingDataFull = "$base_url/booking-datafull";
   static const String callMasking =
       "https://panelv2.cloudshope.com/api/click_to_call"; //bearer Token =  289322|fY6HKG25SZnGjqMsy9Y4H896AWCTDJ4GcMI8of4R
-
-
 
   static const String appkeyid =
       r"Qswde@#$@ESCDdreghreiue#%$#^fkjhdhR$$#hvjkdhkdf%^$$#hdgjdf";

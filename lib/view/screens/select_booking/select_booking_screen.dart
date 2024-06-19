@@ -15,7 +15,6 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../blocs/cart_data/cart_data_bloc.dart';
 import '../../../util/dimensions.dart';
 import '../../base/loading_screen.dart';
-import '../payment/payment_screen.dart';
 
 class SelectBookingDateScreen extends StatefulWidget {
   const SelectBookingDateScreen({Key? key}) : super(key: key);
@@ -111,14 +110,16 @@ class _SelectBookingDateScreenState extends State<SelectBookingDateScreen> {
                 if (cartState is CartDataLoading) {
                   return const LoadingScreen();
                 } else if (cartState is CartDataLoaded) {
+                  final DateTime now = DateTime.now();
                   String selectedDateTime =
                       cartState.cartData.bookingDateTime ?? "";
-                  log(selectedDateTime.toString());
+                  log("selectedDateTime.toString()-----${selectedDateTime.toString()}");
                   String timeSlot = "";
                   try {
                     final DateTime dateTime = DateTime.parse(selectedDateTime);
                     final DateFormat formatter = DateFormat('HH:mm:ss');
                     timeSlot = formatter.format(dateTime);
+                    print("time solt-----$timeSlot");
                   } catch (e) {}
                   return FutureBuilder<BookingSlotModel?>(
                     future: _future,
@@ -143,57 +144,73 @@ class _SelectBookingDateScreenState extends State<SelectBookingDateScreen> {
                             itemCount: slotArray.length,
                             shrinkWrap: true,
                             itemBuilder: (BuildContext context, int index) {
-                              return InkWell(
-                                onTap: () {
-                                  // final date = DateTime.parse(
-                                  //     "2023-10-03T10:00:00.000000Z");
-                                  // final DateFormat formatter =
-                                  //     DateFormat('HH:mm:ss');
-                                  setState(() {
-                                    context.read<CartDataBloc>().add(
-                                        CartBookingSlotUpdate(
-                                            "${slotArray[index].date!} ${slotArray[index].otherDate}"));
-                                  });
-                                  log("${timeSlot}");
-                                },
-                                // child: timeSlot == "${(slotArray[index].date)}${slotArray[index].slotStartTime}"
-                                child: (slotArray[index].isCurrent == true)
-                                    ? (selectedDateTime ==
-                                            "${slotArray[index].date!} ${slotArray[index].otherDate}"
-                                        ? Card(
-                                            color: const Color(0xFFae65ff),
-                                            child: Center(
-                                                child: Text(
-                                              (slotArray[index]
-                                                      .slotStartTime) ??
-                                                  "",
-                                              style: const TextStyle(
-                                                  color: Colors.white),
-                                            )),
-                                          )
-                                        : Card(
-                                            color: const Color(0xFFd9bef4),
-                                            child: Center(
-                                              child: Text(
-                                                slotArray[index]
-                                                        .slotStartTime ??
-                                                    "",
-                                              ),
+                              final DateTime matchTime = DateTime.parse(
+                                  "${slotArray[index].date!} ${slotArray[index].otherDate}");
+                              return matchTime.isAfter(DateTime.now())
+                                  ? InkWell(
+                                      onTap: () {
+                                        // final date = DateTime.parse(
+                                        //     "2023-10-03T10:00:00.000000Z");
+                                        // final DateFormat formatter =
+                                        //     DateFormat('HH:mm:ss');
+                                        setState(() {
+                                          context.read<CartDataBloc>().add(
+                                              CartBookingSlotUpdate(
+                                                  "${slotArray[index].date!} ${slotArray[index].otherDate}"));
+                                        });
+                                        log(timeSlot);
+                                        log("-----------------${slotArray[index].date!} ${slotArray[index].otherDate}");
+                                      },
+                                      // child: timeSlot == "${(slotArray[index].date)}${slotArray[index].slotStartTime}"
+                                      child: (slotArray[index].isCurrent ==
+                                              true)
+                                          ? (selectedDateTime ==
+                                                  "${slotArray[index].date!} ${slotArray[index].otherDate}"
+                                              ? Card(
+                                                  color:
+                                                      const Color(0xFFae65ff),
+                                                  child: Center(
+                                                      child: Text(
+                                                    (slotArray[index]
+                                                            .slotStartTime) ??
+                                                        "",
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                  )),
+                                                )
+                                              : Card(
+                                                  color:
+                                                      const Color(0xFFd9bef4),
+                                                  child: Center(
+                                                    child: Text(
+                                                      slotArray[index]
+                                                              .slotStartTime ??
+                                                          "",
+                                                    ),
+                                                  ),
+                                                ))
+                                          : const Card(
+                                              color: Color(0xFFd9bef4),
+                                              child: Center(
+                                                  child: Text(
+                                                // (slotArray[index]
+                                                //         .slotStartTime) ??
+                                                "Not Available",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 10),
+                                              )),
                                             ),
-                                          ))
-                                    : const Card(
-                                        color: const Color(0xFFd9bef4),
-                                        child: Center(
-                                            child: Text(
-                                          // (slotArray[index]
-                                          //         .slotStartTime) ??
-                                          "Not Available",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 10),
-                                        )),
+                                    )
+                                  : Card(
+                                      //color: const Color(0xFFd9bef3),
+                                      color: Colors.grey,
+                                      child: Center(
+                                        child: Text(
+                                          slotArray[index].slotStartTime ?? "",
+                                        ),
                                       ),
-                              );
+                                    );
                             });
                       } else {
                         return const CustomError();
@@ -214,6 +231,7 @@ class _SelectBookingDateScreenState extends State<SelectBookingDateScreen> {
             return const LoadingScreen();
           } else if (cartState is CartDataLoaded) {
             return BottomAppBar(
+              surfaceTintColor: Colors.white,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -243,6 +261,9 @@ class _SelectBookingDateScreenState extends State<SelectBookingDateScreen> {
                         // color: const Color(0xFFA854FC),
 
                         style: TextButton.styleFrom(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
                             backgroundColor: const Color(0xFFA854FC),
                             minimumSize: const Size(double.infinity,
                                 Dimensions.PADDING_SIZE_DEFAULT),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class ProductDetails extends StatefulWidget {
   // final String proId;
   // final String stock;

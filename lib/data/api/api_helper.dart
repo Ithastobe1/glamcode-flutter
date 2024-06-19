@@ -1,17 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:glamcode/data/model/additional_fee_model.dart';
 import 'package:glamcode/data/model/addon_model/addon_model.dart';
 import 'package:glamcode/data/model/address_details_model.dart';
 import 'package:glamcode/data/model/about.dart';
 import 'package:glamcode/data/model/auth.dart';
-import 'package:glamcode/data/model/booking_slots_model.dart';
 import 'package:glamcode/data/model/bookings.dart';
 import 'package:glamcode/data/model/coupons.dart';
 import 'package:glamcode/data/model/gallery.dart';
@@ -30,7 +29,6 @@ import 'package:intl/intl.dart';
 
 import '../../view/screens/select_booking/bookingslotmodel.dart';
 import '../model/cancelReschedule.dart';
-import '../model/checkUserExist.dart';
 import '../model/packages_model/preferred_pack_model.dart';
 
 class DioClient {
@@ -288,7 +286,7 @@ class DioClient {
         data: jsonData,
       );
       res = AddressDetails.fromJson(response.data["addressDetail"]);
-      print(res.toJson());
+      print("res.toJson()----${res.toJson()}");
     } on DioError catch (e) {
       if (e.response != null) {
       } else {}
@@ -302,6 +300,7 @@ class DioClient {
       Response response = await _dio.post(
         "${AppConstants.setPrimaryAddress}/${addressDetails.addressId}",
       );
+      print(response);
     } on DioError catch (e) {
       if (e.response != null) {
       } else {}
@@ -343,6 +342,33 @@ class DioClient {
                 "Accept": "application/json",
               }));
       print(response);
+    } on DioError catch (e) {
+      if (e.response != null) {
+      } else {}
+      return false;
+    }
+    return true;
+  }
+
+  Future<bool> fireToken(String? value) async {
+    User currentUser = await auth.currentUser;
+    Map<String, String> datat = {
+      "device_token": value.toString(),
+      "user_id": currentUser.id.toString(),
+    };
+    print("datatoe--------$datat");
+    try {
+      Response response = await _dio.post(AppConstants.updateToken,
+          data: datat,
+          options: Options(
+              contentType: 'application/json',
+              followRedirects: true,
+              validateStatus: (status) => true,
+              headers: {
+                "Accept": "application/json",
+              }));
+      print("response00-----$response");
+      print("response2-----$response");
     } on DioError catch (e) {
       if (e.response != null) {
       } else {}
@@ -458,33 +484,38 @@ class DioClient {
   Future<PaymentResponseModel?> makePayment(String jsonData) async {
     print("In the data full folder");
     print(jsonData);
+    var userAgent = "";
+    if (Platform.isAndroid) {
+      userAgent = "Android";
+    } else {
+      userAgent = "iOS";
+    }
     PaymentResponseModel paymentResponseModel = PaymentResponseModel();
     try {
-      Response response = await _dio.post(
-        AppConstants.bookingDataFull,
-        data: jsonData,
-      );
+      Response response = await _dio.post(AppConstants.bookingDataFull,
+          data: jsonData,
+          options: Options()
+            ..headers = <String, dynamic>{
+              'user-agent': userAgent,
+            });
       paymentResponseModel = PaymentResponseModel.fromJson(response.data);
-      print("print(paymentResponseModel.coupon);");
-      print(paymentResponseModel.coupon);
-      print(response);
-    } on DioError catch (e) {
-      if (e.response != null) {
-      } else {}
+      print(paymentResponseModel);
+    } catch (e, stack) {
+      log(e.toString(), stackTrace: stack);
       return null;
     }
     return paymentResponseModel;
   }
 
   Future<CancelReschedule?> cancelReschedule(
-      String bookingid, String datetime, String type_exec) async {
+      String bookingid, String datetime, String typeExec) async {
     print("Cancel Reschedule");
     User currentUser = await auth.currentUser;
     Map<String, dynamic> jsonData = {
       "user_id": currentUser.id,
       "bookingid": bookingid,
       "date_time": datetime,
-      "type_exec": type_exec
+      "type_exec": typeExec
     };
     CancelReschedule cancelReschedule = CancelReschedule();
     try {
@@ -525,10 +556,7 @@ class DioClient {
     return true;
   }
 
-
-
-
-  Future<User?> verifyOtp(String otp, String phoneNumber) async {
+  Future<UserResponse?> verifyOtp(String otp, String phoneNumber) async {
     Map<String, dynamic> data = {
       "calling_code": "+91",
       "mobile": phoneNumber,
@@ -540,7 +568,11 @@ class DioClient {
         AppConstants.apiOtpVerify,
         data: data,
       );
-      return User.fromJson(jsonEncode(response.data["user"]));
+      if (response.data["status"].toString().toLowerCase().contains("fail")) {
+        return const UserResponse(null, "");
+      }
+      return UserResponse(User.fromJson(jsonEncode(response.data["user"])),
+          response.data["message"]);
     } on DioError catch (e) {
       if (e.response != null) {
       } else {}
@@ -572,23 +604,23 @@ class DioClient {
       print(response.data);
 
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Connecting..."),
           backgroundColor: Colors.green,
           duration: Duration(seconds: 8),
         ));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Call not connected"),
           backgroundColor: Colors.red,
         ));
       }
     } on DioError catch (e) {
       print('Dio Error: $e');
-      return null;
+      return;
     } catch (e) {
       print('Error: $e');
-      return null;
+      return;
     }
   }
 

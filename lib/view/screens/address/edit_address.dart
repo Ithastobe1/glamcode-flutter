@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:glamcode/data/model/address_details_model.dart';
 import 'package:glamcode/view/base/custom_text_field.dart';
 import 'package:glamcode/view/base/loading_screen.dart';
-import 'package:glamcode/view/screens/address/select_address.dart';
-import 'package:glamcode/view/screens/address/selectnew_address.dart';
 
 import '../../../data/api/api_helper.dart';
 import '../../../util/dimensions.dart';
@@ -86,7 +84,7 @@ class _EditAddressScreenState extends State<EditAddressScreen>
                                     ElevatedButton(
                                       style: ButtonStyle(
                                           backgroundColor:
-                                              MaterialStateProperty.all(
+                                              WidgetStateProperty.all(
                                                   const Color(0xFFA854FC))),
                                       onPressed: () {
                                         Navigator.of(context).pop();
@@ -96,7 +94,7 @@ class _EditAddressScreenState extends State<EditAddressScreen>
                                     ElevatedButton(
                                       style: ButtonStyle(
                                           backgroundColor:
-                                              MaterialStateProperty.all(
+                                              WidgetStateProperty.all(
                                                   const Color(0xFFA854FC))),
                                       onPressed: () {
                                         Navigator.pop(context);
@@ -109,15 +107,15 @@ class _EditAddressScreenState extends State<EditAddressScreen>
                                         //                 edit: true,
                                         //                 addressDetails: widget
                                         //                     .addressDetails)));
-                                         Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                SearchLocationScreen(
-                                                                  edit: false,
-                                                                  addressDetails:
-                                                                      AddressDetails(),
-                                                                )));
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SearchLocationScreen(
+                                                      edit: false,
+                                                      addressDetails:
+                                                          AddressDetails(),
+                                                    )));
                                       },
                                       child: const Text("Approve"),
                                     ),
@@ -163,11 +161,13 @@ class _EditAddressScreenState extends State<EditAddressScreen>
                                       .setPrimaryAddress(value)
                                       .then((value) {
                                     if (value) {
-                                      Navigator.of(context).pushAndRemoveUntil(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const CartScreen()),
-                                          ModalRoute.withName('/index'));
+                                      Navigator.pop(context);
+                                      setState(() {});
+                                      // Navigator.of(context).pushAndRemoveUntil(
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //             const CartScreen()),
+                                      //     ModalRoute.withName('/index'));
                                     } else {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(

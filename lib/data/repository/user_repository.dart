@@ -13,21 +13,20 @@ class UserRepository {
   Future<bool> sendOtp(String phoneNumber, String referlcode) async {
     try {
       return await dioClient.sendOtp(phoneNumber, referlcode) ?? false;
-      print(phoneNumber + referlcode);
     } catch (e) {
       print(e.toString());
       rethrow;
     }
   }
 
-  Future<bool> verifyOtp(String otp, String phoneNumber) async {
+  Future<UserResponse> verifyOtp(String otp, String phoneNumber) async {
     try {
-      User? user = await dioClient.verifyOtp(otp, phoneNumber);
-      if (user != null) {
-        auth.updateCurrentUserInstance(user);
-        return true;
+      UserResponse? user = await dioClient.verifyOtp(otp, phoneNumber);
+      if (user!.user != null) {
+        auth.updateCurrentUserInstance(user.user!);
+        return user;
       }
-      return false;
+      return user;
     } catch (e) {
       print(e.toString());
       rethrow;

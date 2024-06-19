@@ -4,13 +4,10 @@ import 'package:glamcode/data/model/address_details_model.dart';
 import 'package:glamcode/util/dimensions.dart';
 import 'package:glamcode/view/base/error_screen.dart';
 import 'package:glamcode/view/screens/address/edit_address.dart';
-import 'package:glamcode/view/screens/address/select_address.dart';
-import 'package:glamcode/view/screens/address/selectnew_address.dart';
 
 import '../../base/custom_divider.dart';
 import '../../base/loading_screen.dart';
 import '../cart/cart_screen.dart';
-import '../home/map_location/searchLocationMap.dart';
 import 'getuserlocationmapscreen.dart';
 
 class AddressDetailsScreen extends StatefulWidget {
@@ -44,8 +41,14 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
             AddressDetailsModel addressData = AddressDetailsModel();
             if (snapshot.hasData) {
               addressData = snapshot.data!;
-              List<AddressDetails> addressList =
-                  addressData.addressDetails ?? [];
+              List<AddressDetails> addressList = [];
+              Set<String> uniqueAddresses = {};
+              for (var address in addressData.addressDetails!) {
+                if (!uniqueAddresses.contains(address.addressHeading)) {
+                  uniqueAddresses.add(address.addressHeading.toString());
+                  addressList.add(address);
+                }
+              }
               return SingleChildScrollView(
                 child: Column(
                   children: [
@@ -127,7 +130,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                           children: [
                             const Icon(Icons.add),
                             Text(
-                              "Add new address",
+                              "Add New Address",
                               style: TextStyle(
                                   fontSize: Dimensions.fontSizeExtraLarge),
                             )
@@ -179,16 +182,19 @@ class _AddressTileState extends State<AddressTile> {
     return Padding(
       padding:
           const EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_DEFAULT),
-      child: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.symmetric(
-            horizontal: Dimensions.PADDING_SIZE_DEFAULT),
+      child: Card(
+        elevation: 6,
+        surfaceTintColor: Colors.white,
+        shadowColor: const Color.fromARGB(255, 255, 5, 255),
+        borderOnForeground: true,
+        margin: const EdgeInsets.all(0),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Text(
@@ -202,7 +208,8 @@ class _AddressTileState extends State<AddressTile> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "${widget.addressDetails.street ?? ""} ${widget.addressDetails.pincode ?? ""}",
+                "${widget.addressDetails.addressHeading}",
+                // "${widget.addressDetails.street ?? ""} ${widget.addressDetails.pincode ?? ""}",
                 style: TextStyle(fontSize: Dimensions.fontSizeLarge),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -220,6 +227,7 @@ class _AddressTileState extends State<AddressTile> {
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(
                       Icons.edit,
+                      color: Colors.purple,
                       size: Dimensions.fontSizeOverLarge,
                     ),
                   ),
@@ -231,12 +239,23 @@ class _AddressTileState extends State<AddressTile> {
                           setState(() {
                             loading = true;
                           });
-                          DioClient.instance.deleteAddress(
-                              widget.addressDetails.addressId?.toInt() ?? 0);
+                          DioClient.instance
+                              .deleteAddress(
+                                  widget.addressDetails.addressId?.toInt() ?? 0)
+                              .then((value) {
+                            print("delete value---$value");
+                            setState(() {
+                              loading = value;
+                              DioClient.instance.getAddress();
+                            });
+                          });
                         },
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.delete_outline_outlined),
+                          child: Icon(
+                            Icons.delete_outline_outlined,
+                            color: Colors.purple,
+                          ),
                         ),
                       ),
               ],
@@ -269,24 +288,29 @@ class _AddressTileState extends State<AddressTile> {
                                 });
                                 await DioClient.instance
                                     .setPrimaryAddress(widget.addressDetails)
-                                    .then((value) => Navigator.of(context)
-                                        .pushAndRemoveUntil(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const CartScreen()),
-                                            ModalRoute.withName('/index')));
+                                    .then((value) {
+                                  Navigator.pop(context);
+                                }
+
+                                        // Navigator.of(context)
+                                        //     .pushAndRemoveUntil(
+                                        //         MaterialPageRoute(
+                                        //             builder: (context) =>
+                                        //                 const CartScreen()),
+                                        //         ModalRoute.withName('/index'))
+
+                                        );
                               },
                         style: ButtonStyle(
-                          padding: MaterialStateProperty.all(
-                              const EdgeInsets.all(
-                                  Dimensions.PADDING_SIZE_DEFAULT)),
+                          padding: WidgetStateProperty.all(const EdgeInsets.all(
+                              Dimensions.PADDING_SIZE_DEFAULT)),
                           minimumSize:
-                              MaterialStateProperty.all(const Size(0, 0)),
+                              WidgetStateProperty.all(const Size(0, 0)),
                           backgroundColor:
                               (widget.addressDetails.isPrimary != null &&
                                       widget.addressDetails.isPrimary!)
-                                  ? MaterialStateProperty.all(Colors.grey)
-                                  : MaterialStateProperty.all(
+                                  ? WidgetStateProperty.all(Colors.grey)
+                                  : WidgetStateProperty.all(
                                       const Color(0xFFA854FC)),
                         ),
                         child: primaryLoading

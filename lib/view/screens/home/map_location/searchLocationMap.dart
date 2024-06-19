@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:glamcode/data/api/api_helper.dart';
 import 'package:glamcode/data/model/address_details_model.dart';
-import 'package:glamcode/view/base/error_screen.dart';
-import 'package:glamcode/view/screens/address/new_address.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:location_geocoder/location_geocoder.dart';
@@ -15,9 +13,6 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../util/dimensions.dart';
-import '../../../base/custom_divider.dart';
-import '../../../base/loading_screen.dart';
 import '../../address/address_screen.dart';
 import '../../address/getuserlocationmapscreen.dart';
 
@@ -32,7 +27,7 @@ class SearchLocationScreen extends StatefulWidget {
 }
 
 class _SearchLocationScreenState extends State<SearchLocationScreen> {
-  TextEditingController _addressController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
   static String? finaladdress;
   late SharedPreferences prefs;
   bool showSpinner = false;
@@ -82,16 +77,16 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
     }
   }
 
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
-  List<Marker> _marker = [];
+  final List<Marker> _marker = [];
   final List<Marker> _list = [];
 
   Future<Position> getUserCurrentLocation() async {
     await Geolocator.requestPermission()
         .then((value) {})
         .onError((error, stackTrace) {
-      print("error" + error.toString());
+      print("error$error");
     });
     return await Geolocator.getCurrentPosition();
   }
@@ -102,7 +97,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
     });
     getUserCurrentLocation().then((value) async {
       print("My current location");
-      print(value.latitude.toString() + " " + value.longitude.toString());
+      print("${value.latitude} ${value.longitude}");
 
       // _marker.add(Marker(
       //     markerId: MarkerId("5"),
@@ -158,29 +153,15 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFFFF1F1),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Column(children: [
           const SizedBox(
             height: 50,
           ),
-
-          // ElevatedButton.icon(
-          //   onPressed: () {},
-          //   icon: Icon(Icons.location_on_sharp),
-          //   label: Text("User my Current Location"),
-          //   style: ElevatedButton.styleFrom(
-          //     backgroundColor: Colors.grey,
-          //     foregroundColor: Colors.black,
-          //     fixedSize: Size(double.infinity, 40),
-          //     elevation: 0,
-          //     shape: RoundedRectangleBorder(
-          //         borderRadius: BorderRadius.all(Radius.circular(10))),
-          //   ),
-          // ),
-
           Card(
+            surfaceTintColor: Colors.white,
             elevation: 0,
             child: Column(
               children: [
@@ -220,7 +201,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                         Text(
                           "Use current location",
                           style: TextStyle(color: Colors.purple, fontSize: 20),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -228,13 +209,13 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
               ],
             ),
           ),
-
+          // const Divider(),
           Expanded(
             child: FutureBuilder<AddressDetailsModel?>(
               future: _future,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: const CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.connectionState == ConnectionState.done) {
                   AddressDetailsModel addressData = AddressDetailsModel();
                   if (snapshot.hasData) {
@@ -244,14 +225,17 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                     return SingleChildScrollView(
                       child: Column(
                         children: [
-                          const Divider(),
                           ListView.builder(
+                            padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: addressList.length,
                             itemBuilder: (context, index) {
-                              return AddressTile(
-                                addressDetails: addressList[index],
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: AddressTile(
+                                  addressDetails: addressList[index],
+                                ),
                               );
                             },
                           ),
@@ -267,39 +251,41 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
               },
             ),
           ),
-          const Divider(),
+          // const Divider(),
+          // Expanded(
+          //     child: Visibility(
+          //   visible: _placeList.isNotEmpty,
+          //   child: ListView.builder(
+          //       itemCount: _placeList.length,
+          //       itemBuilder: (context, index) {
+          //         return Card(
+          //           color: Colors.white,
+          //           child: ListTile(
+          //             onTap: () async {
+          //               setState(() {
+          //                 showSpinner = true;
+          //               });
+          //               final address = await geocoder.findAddressesFromQuery(
+          //                   _placeList[index]['description']);
+          //               setState(() {
+          //                 showSpinner = false;
+          //               });
 
-          Expanded(
-              child: ListView.builder(
-                  itemCount: _placeList.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: Colors.white,
-                      child: ListTile(
-                        onTap: () async {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          final address = await geocoder.findAddressesFromQuery(
-                              _placeList[index]['description']);
-                          setState(() {
-                            showSpinner = false;
-                          });
+          //               move(
+          //                   _placeList[index]['description'],
+          //                   _placeList[index]['description'],
+          //                   num.parse(
+          //                       address.first.coordinates.latitude.toString()),
+          //                   num.parse(address.first.coordinates.longitude
+          //                       .toString()));
 
-                          move(
-                              _placeList[index]['description'],
-                              _placeList[index]['description'],
-                              num.parse(address.first.coordinates.latitude
-                                  .toString()),
-                              num.parse(address.first.coordinates.longitude
-                                  .toString()));
-
-                          // log(address.first.coordinates.toString());
-                        },
-                        title: Text(_placeList[index]['description']),
-                      ),
-                    );
-                  }))
+          //               // log(address.first.coordinates.toString());
+          //             },
+          //             title: Text(_placeList[index]['description']),
+          //           ),
+          //         );
+          //       }),
+          // ))
         ]),
       ),
     );

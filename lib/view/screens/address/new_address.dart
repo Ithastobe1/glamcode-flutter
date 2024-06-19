@@ -3,11 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:glamcode/data/api/api_helper.dart';
 import 'package:glamcode/data/model/address_details_model.dart';
-import 'package:glamcode/home.dart';
-import 'package:glamcode/view/base/custom_text_field.dart';
 import 'package:glamcode/view/base/loading_screen.dart';
-import 'package:glamcode/view/screens/cart/cart_screen.dart';
-import 'package:glamcode/view/screens/dashboard/dashboard_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/model/auth.dart';
@@ -123,15 +119,15 @@ class _NewAddressScreenState extends State<NewAddressScreen>
                       Padding(
                         padding: const EdgeInsets.all(13.0),
                         child: TextField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey),
                             ),
                             focusColor: Colors.black,
                             floatingLabelStyle:
-                                const TextStyle(color: Colors.black),
+                                TextStyle(color: Colors.black),
                             labelStyle:
-                                TextStyle(color: const Color(0xFF424242)),
+                                TextStyle(color: Color(0xFF424242)),
                             labelText: "Name",
                           ),
                           keyboardType: TextInputType.text,
@@ -142,15 +138,15 @@ class _NewAddressScreenState extends State<NewAddressScreen>
                       Padding(
                         padding: const EdgeInsets.all(13.0),
                         child: TextField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey),
                             ),
                             focusColor: Colors.black,
                             floatingLabelStyle:
-                                const TextStyle(color: Colors.black),
+                                TextStyle(color: Colors.black),
                             labelStyle:
-                                TextStyle(color: const Color(0xFF424242)),
+                                TextStyle(color: Color(0xFF424242)),
                             labelText: "House no./ Flat no.",
                           ),
                           keyboardType: TextInputType.text,
@@ -161,15 +157,15 @@ class _NewAddressScreenState extends State<NewAddressScreen>
                       Padding(
                         padding: const EdgeInsets.all(13.0),
                         child: TextField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey),
                             ),
                             focusColor: Colors.black,
                             floatingLabelStyle:
-                                const TextStyle(color: Colors.black),
+                                TextStyle(color: Colors.black),
                             labelStyle:
-                                TextStyle(color: const Color(0xFF424242)),
+                                TextStyle(color: Color(0xFF424242)),
                             labelText: "Location Address",
                           ),
                           keyboardType: TextInputType.text,
@@ -180,15 +176,15 @@ class _NewAddressScreenState extends State<NewAddressScreen>
                       Padding(
                         padding: const EdgeInsets.all(13.0),
                         child: TextField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey),
                             ),
                             focusColor: Colors.black,
                             floatingLabelStyle:
-                                const TextStyle(color: Colors.black),
+                                TextStyle(color: Colors.black),
                             labelStyle:
-                                TextStyle(color: const Color(0xFF424242)),
+                                TextStyle(color: Color(0xFF424242)),
                             labelText: "Mobile Number",
                           ),
                           keyboardType: TextInputType.phone,

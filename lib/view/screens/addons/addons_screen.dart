@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamcode/data/api/api_helper.dart';
@@ -10,7 +9,6 @@ import '../../../blocs/cart_data/cart_data_bloc.dart';
 import '../../../data/model/addon_model/addon_model.dart';
 import '../../../util/dimensions.dart';
 import '../../base/loading_screen.dart';
-import '../cart/cart_screen.dart';
 
 class AddonsScreen extends StatefulWidget {
   const AddonsScreen({Key? key}) : super(key: key);
@@ -22,8 +20,6 @@ class AddonsScreen extends StatefulWidget {
 class _AddonsScreenState extends State<AddonsScreen> {
   final int _selectedIndex = 0;
   late Future<AddonModel?> _future;
-
- 
 
   @override
   void initState() {
@@ -42,6 +38,7 @@ class _AddonsScreenState extends State<AddonsScreen> {
         future: _future,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
+            print("data wait------");
             return const LoadingScreen();
           } else if (snapshot.connectionState == ConnectionState.done) {
             AddonModel addonData = const AddonModel();
@@ -51,6 +48,7 @@ class _AddonsScreenState extends State<AddonsScreen> {
               return BlocBuilder<AddonBloc, AddonState>(
                 builder: (context, state) {
                   if (state is AddonLoading) {
+                    print("data load");
                     return const LoadingScreen();
                   } else if (state is AddonLoaded) {
                     return ListView.builder(
@@ -70,6 +68,7 @@ class _AddonsScreenState extends State<AddonsScreen> {
                             });
                           },
                           child: Card(
+                            surfaceTintColor: Colors.white,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12)),
                             // color: Colors.white,
@@ -82,14 +81,16 @@ class _AddonsScreenState extends State<AddonsScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    "${addonList[index].name}",
-                                    style: TextStyle(
-                                        fontSize: Dimensions.fontSizeLarge,
-                                        color: state.addonList
-                                                .contains(addonList[index])
-                                            ? Colors.white
-                                            : Colors.black),
+                                  Expanded(
+                                    child: Text(
+                                      "${addonList[index].name}",
+                                      style: TextStyle(
+                                          fontSize: Dimensions.fontSizeLarge,
+                                          color: state.addonList
+                                                  .contains(addonList[index])
+                                              ? Colors.white
+                                              : Colors.black),
+                                    ),
                                   ),
                                   Text(
                                     "₹${addonList[index].price}",
@@ -172,6 +173,8 @@ class _AddonsScreenState extends State<AddonsScreen> {
             return const LoadingScreen();
           } else if (cartState is CartDataLoaded) {
             return BottomAppBar(
+              color: Colors.white,
+              surfaceTintColor: Colors.white,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -196,6 +199,9 @@ class _AddonsScreenState extends State<AddonsScreen> {
                         const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                     child: TextButton(
                         style: TextButton.styleFrom(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
                             backgroundColor: const Color(0xFFA854FC),
                             minimumSize: const Size(double.infinity,
                                 Dimensions.PADDING_SIZE_DEFAULT),
@@ -208,8 +214,7 @@ class _AddonsScreenState extends State<AddonsScreen> {
                           //     context,
                           //     CupertinoPageRoute(
                           //         builder: (context) => const CartScreen()));
-                                  Navigator.pushNamed(context,
-                                                        '/booking-data');
+                          Navigator.pushNamed(context, '/booking-data');
                         },
                         child: const Text("Next")),
                   ))

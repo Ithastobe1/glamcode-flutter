@@ -1,27 +1,18 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glamcode/data/model/bookings.dart';
-import 'package:glamcode/main.dart';
 import 'package:glamcode/util/dimensions.dart';
 import 'package:glamcode/view/Chat/ui/chatroom.dart';
-import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-import '../../../../blocs/cart_data/cart_data_bloc.dart';
 import '../../../../data/api/api_helper.dart';
 import '../../../../data/model/auth.dart';
 import '../../../../data/model/user.dart';
 import '../../../Chat/ui/model/chatroomModel.dart';
-import '../../../base/error_screen.dart';
-import '../../../base/loading_screen.dart';
 import '../../dashboard/dashboard_screen.dart';
-import '../../select_booking/bookingslotmodel.dart';
 import 'rescheduleBottomSheet.dart';
 
 class BookingTile extends StatefulWidget {
@@ -45,11 +36,11 @@ class _BookingTileState extends State<BookingTile> {
 
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection(widget.ongoingBookingsArr.bookingId.toString())
-        .where("participants.${beuticianId}", isEqualTo: true)
-        .where("participants.${userid}", isEqualTo: true)
+        .where("participants.$beuticianId", isEqualTo: true)
+        .where("participants.$userid", isEqualTo: true)
         .get();
 
-    if (snapshot.docs.length > 0) {
+    if (snapshot.docs.isNotEmpty) {
       //Fetch the existing one
       log("Chatroom already creatred!");
 
@@ -83,7 +74,7 @@ class _BookingTileState extends State<BookingTile> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
         child: Card(
-          color: Color.fromARGB(255, 218, 244, 250),
+          color: const Color.fromARGB(255, 218, 244, 250),
           elevation: 10,
           shadowColor: Colors.red,
           borderOnForeground: true,
@@ -93,7 +84,7 @@ class _BookingTileState extends State<BookingTile> {
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                gradient: LinearGradient(colors: [
+                gradient: const LinearGradient(colors: [
                   Colors.white,
                   Colors.white,
                   Color.fromARGB(255, 249, 203, 218),
@@ -111,11 +102,11 @@ class _BookingTileState extends State<BookingTile> {
                     child: Row(
                       children: [
                         Text(
-                          "${widget.ongoingBookingsArr.bookingDate}  AT  ${widget.ongoingBookingsArr.bookingTime}",
+                          "${widget.ongoingBookingsArr.bookingDate}  AT  ${widget.ongoingBookingsArr.bookingTime!.substring(0, widget.ongoingBookingsArr.bookingTime!.lastIndexOf(":"))}",
                           style: const TextStyle(
                               fontWeight: FontWeight.w900, fontSize: 20),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         // PopupMenuButton(
@@ -272,13 +263,13 @@ class _BookingTileState extends State<BookingTile> {
                     ),
                   ],
                 ),
-                Divider(
+                const Divider(
                   color: Colors.black,
                 ),
                 Row(
                   children: [
                     CupertinoButton(
-                        child: Icon(Icons.call),
+                        child: const Icon(Icons.call),
                         onPressed: () {
                           if (widget.ongoingBookingsArr.bookingAssigned ==
                               true) {
@@ -345,7 +336,7 @@ class _BookingTileState extends State<BookingTile> {
                                     )));
                           }
                         }),
-                    SizedBox(
+                    const SizedBox(
                       width: 2,
                     ),
                     Container(
@@ -385,8 +376,8 @@ class _BookingTileState extends State<BookingTile> {
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: Text("Alert"),
-                                        content: Text(
+                                        title: const Text("Alert"),
+                                        content: const Text(
                                             "Do you want to cancel the booking ?"),
                                         actions: [
                                           TextButton(
@@ -403,27 +394,28 @@ class _BookingTileState extends State<BookingTile> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: ((context) =>
-                                                            DashboardScreen(
+                                                            const DashboardScreen(
                                                                 pageIndex:
                                                                     2))));
                                                 DioClient.instance
                                                     .getBookings();
                                                 ScaffoldMessenger.of(context)
-                                                    .showSnackBar(SnackBar(
+                                                    .showSnackBar(
+                                                        const SnackBar(
                                                   content: Text(
                                                       "Booking Cancelled!"),
                                                   backgroundColor: Colors.green,
                                                 ));
                                               },
-                                              child: Text("Yes")),
-                                          SizedBox(
+                                              child: const Text("Yes")),
+                                          const SizedBox(
                                             height: 10,
                                           ),
                                           TextButton(
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              child: Text("No"))
+                                              child: const Text("No"))
                                         ],
                                       );
                                     });
@@ -436,7 +428,7 @@ class _BookingTileState extends State<BookingTile> {
                                     useSafeArea: true,
                                     enableDrag: true,
                                     showDragHandle: true,
-                                    shape: RoundedRectangleBorder(
+                                    shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(12),
                                             topRight: Radius.circular(12))),

@@ -19,6 +19,7 @@ class PackageTile extends StatelessWidget {
           vertical: Dimensions.PADDING_SIZE_SMALL, horizontal: 10),
       child: Card(
         elevation: 6,
+        surfaceTintColor: Colors.white,
         shadowColor: const Color.fromARGB(255, 255, 5, 255),
         borderOnForeground: true,
         margin: const EdgeInsets.all(0),
@@ -93,51 +94,9 @@ class PackageTile extends StatelessWidget {
                             ],
                           ),
                         ),
-                        // Text(),
-                        // Padding(
-                        //   padding: const EdgeInsets.all(
-                        //       Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                        //   child: Row(
-                        //     children: [
-                        //       // RichText(
-                        //       //   text: TextSpan(
-                        //       //     text:
-                        //       //     //     "₹${servicePackage.discountedPrice}   ",
-                        //       //     // style: TextStyle(
-                        //       //     //     fontSize: Dimensions.fontSizeDefault,
-                        //       //     //     color: Colors.black,
-                        //       //     //     fontWeight: FontWeight.bold,
-                        //       //     //     overflow: TextOverflow.fade),
-                        //       //     // children: [
-                        //       //     //   TextSpan(
-                        //       //     //     text: "₹${servicePackage.price}",
-                        //       //     //     style: TextStyle(
-                        //       //     //         fontSize: Dimensions.fontSizeSmall,
-                        //       //     //         color: Colors.grey,
-                        //       //     //         decoration:
-                        //       //     //             TextDecoration.lineThrough,
-                        //       //     //         overflow: TextOverflow.fade),
-                        //       //     //   ),
-                        //       //     // ],
-                        //       //   ),
-                        //       // ),
-
-                        //       // Padding(
-                        //       //   padding: const EdgeInsets.only(
-                        //       //       left: Dimensions.PADDING_SIZE_SMALL),
-                        //       //   child: GoldenText(
-                        //       //     text: "  ${servicePackage.discount}% Off  ",
-                        //       //   ),
-                        //       // ),
-                        //     ],
-                        //   ),
-
-                        // ),
-
                         const SizedBox(
                           height: 5,
                         ),
-
                         Padding(
                           padding: const EdgeInsets.all(
                               Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -159,17 +118,6 @@ class PackageTile extends StatelessWidget {
                             ],
                           ),
                         ),
-                        // const SizedBox(
-                        //   height: 5,
-                        // ),
-                        // Text(
-                        //   "Services :-",
-                        //   style: TextStyle(
-                        //       color: Colors.black,
-                        //       fontWeight: FontWeight.bold,
-                        //       fontSize: Dimensions.fontSizeLarge,
-                        //       overflow: TextOverflow.fade),
-                        // ),
                       ],
                     ),
                   ),
@@ -179,30 +127,33 @@ class PackageTile extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.bottomCenter,
                     children: [
-                      Container(
+                      SizedBox(
                         height: 140,
                         width: 130,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 10),
-                          // padding: const EdgeInsets.all(
-                          //     Dimensions.PADDING_SIZE_SMALL),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
                             // clipBehavior: Clip.hardEdge,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => PackageInfo(
-                                          servicePackage: servicePackage,
-                                        )));
-                              },
-                              child: Hero(
-                                tag: servicePackage.slug ?? "",
-                                child: Image.network(
-                                    servicePackage.serviceImageUrl ?? ""),
-                              ),
+                            child: Hero(
+                              tag: servicePackage.slug ?? "",
+                              child: Image.network(
+                                  servicePackage.serviceImageUrl ?? ""),
                             ),
+                            // child: InkWell(
+                            //   onTap: () {
+                            //     Navigator.of(context).push(MaterialPageRoute(
+                            //         builder: (context) => PackageInfo(
+                            //               servicePackage: servicePackage,
+                            //             )));
+                            //   },
+                            //   child: Hero(
+                            //     tag: servicePackage.slug ?? "",
+                            //     child: Image.network(
+                            //         servicePackage.serviceImageUrl ?? ""),
+                            //   ),
+                            // ),
                           ),
                         ),
                       ),
@@ -219,12 +170,12 @@ class PackageTile extends StatelessWidget {
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
-              child: const Divider(
+              child: Divider(
                 color: Colors.grey,
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Padding(
                 padding: const EdgeInsets.only(
                     left: Dimensions.PADDING_SIZE_EXTRA_EXTRA_SMALL),
@@ -255,11 +206,11 @@ class PackageTile extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: OutlinedButton(
                   style: ButtonStyle(
-                    side: MaterialStatePropertyAll(BorderSide(
-                        width: 0, color: Color.fromARGB(255, 255, 255, 255))),
+                    side: const WidgetStatePropertyAll(
+                        BorderSide(width: 0, color: Colors.transparent)),
                     splashFactory: InkRipple.splashFactory,
-                    backgroundColor: MaterialStateProperty.all(
-                      Colors.white,
+                    backgroundColor: WidgetStateProperty.all(
+                      Colors.transparent,
                     ),
                   ),
                   onPressed: () {

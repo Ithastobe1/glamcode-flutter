@@ -25,15 +25,24 @@ class _OTPScreenState extends State<OTPScreen> {
   void submitOtp(String? otp) {
     if (otpFormKey.currentState!.validate()) {
       final AuthBloc authBloc = context.read<AuthBloc>();
-      print(widget.phoneNumber);
+
       authBloc.userRepository
           .verifyOtp(otp ?? "", widget.phoneNumber)
           .then((value) async {
-        if (value) {
+        if (value.message.isNotEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                value.message,
+                style: const TextStyle(color: Colors.white),
+              ),
+              backgroundColor: const Color(0xFFA854FC),
+            ),
+          );
+
           authBloc.add(AppLoaded());
           if (await authBloc.userRepository.isSignedIn()) {
             Navigator.of(context).pop();
-            
           }
         }
       });
@@ -155,8 +164,8 @@ class _OTPScreenState extends State<OTPScreen> {
                           },
                           style: ButtonStyle(
                             backgroundColor:
-                                const MaterialStatePropertyAll(Colors.white),
-                            shape: MaterialStateProperty.all(
+                                const WidgetStatePropertyAll(Colors.white),
+                            shape: WidgetStateProperty.all(
                               const RoundedRectangleBorder(
                                   side: BorderSide(color: Colors.black)),
                             ),

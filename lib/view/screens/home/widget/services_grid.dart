@@ -97,6 +97,7 @@ Widget imageGridCard(
     child: Column(
       children: [
         Card(
+            surfaceTintColor: Colors.white,
             elevation: 4,
             shadowColor: const Color.fromARGB(255, 254, 19, 3),
             shape:
@@ -114,7 +115,7 @@ Widget imageGridCard(
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
+            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
           ),
         )
       ],
@@ -168,6 +169,7 @@ Widget dummyimageGridCard(
     child: Column(
       children: [
         Card(
+            surfaceTintColor: Colors.white,
             elevation: 4,
             shadowColor: const Color.fromARGB(255, 254, 19, 3),
             shape:
@@ -200,7 +202,7 @@ Widget dummyimageGridCard(
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
+            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
           ),
         )
       ],

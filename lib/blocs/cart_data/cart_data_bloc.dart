@@ -37,7 +37,7 @@ class CartDataBloc extends Bloc<CartDataEvent, CartDataState> {
 
   void _onCartUpdate(CartDataUpdate event, Emitter<CartDataState> emit) async {
     final state = this.state;
-    emit(CartDataLoading());
+    // emit(CartDataLoading());
     if (state is CartDataLoaded) {
       try {
         CartData cartDataItem = await cartDataRepository.updateCart(

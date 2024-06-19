@@ -64,7 +64,8 @@ class _PackagesScreenState extends State<PackagesScreen>
             for (var e in packagesCategory) {
               tabTitles.add(Text(
                 e.name ?? "",
-                style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                style:
+                    const TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
               ));
             }
             _tabController =
@@ -119,6 +120,7 @@ class _PackagesScreenState extends State<PackagesScreen>
               floatingActionButton: Padding(
                 padding: const EdgeInsets.all(30),
                 child: FloatingActionButton.extended(
+                  backgroundColor: Colors.white,
                   onPressed: () {
                     showDialog(
                         context: context,
@@ -133,7 +135,10 @@ class _PackagesScreenState extends State<PackagesScreen>
                           );
                         });
                   },
-                  label: const Text("Menu"),
+                  label: const Text(
+                    "Menu",
+                    style: TextStyle(color: Colors.black),
+                  ),
                   icon: const Icon(
                     Icons.menu,
                     color: Color(0xFFAB54FC),

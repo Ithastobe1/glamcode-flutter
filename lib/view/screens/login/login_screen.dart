@@ -1,13 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:glamcode/blocs/auth/auth_bloc.dart';
 import 'package:glamcode/helper/validator.dart';
 import 'package:glamcode/util/dimensions.dart';
 import 'package:glamcode/view/base/loading_screen.dart';
-import 'package:glamcode/view/screens/dashboard/dashboard_screen.dart';
-import 'package:glamcode/view/screens/location/location_screen.dart';
 import 'package:glamcode/view/screens/otp/otp_screen.dart';
 
 class LoginPage extends StatefulWidget {

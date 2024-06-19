@@ -12,9 +12,9 @@ class ScratchCardModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['type'] = this.type;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['type'] = type;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -33,35 +33,35 @@ class Data {
     if (json['cashbackService'] != null) {
       cashbackService = <CashbackService>[];
       json['cashbackService'].forEach((v) {
-        cashbackService!.add(new CashbackService.fromJson(v));
+        cashbackService!.add(CashbackService.fromJson(v));
       });
     }
     if (json['cashback'] != null) {
       cashback = <Cashback>[];
       json['cashback'].forEach((v) {
-        cashback!.add(new Cashback.fromJson(v));
+        cashback!.add(Cashback.fromJson(v));
       });
     }
     if (json['thirdPartyCoupon'] != null) {
       thirdPartyCoupon = <ThirdPartyCoupon>[];
       json['thirdPartyCoupon'].forEach((v) {
-        thirdPartyCoupon!.add(new ThirdPartyCoupon.fromJson(v));
+        thirdPartyCoupon!.add(ThirdPartyCoupon.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.cashbackService != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (cashbackService != null) {
       data['cashbackService'] =
-          this.cashbackService!.map((v) => v.toJson()).toList();
+          cashbackService!.map((v) => v.toJson()).toList();
     }
-    if (this.cashback != null) {
-      data['cashback'] = this.cashback!.map((v) => v.toJson()).toList();
+    if (cashback != null) {
+      data['cashback'] = cashback!.map((v) => v.toJson()).toList();
     }
-    if (this.thirdPartyCoupon != null) {
+    if (thirdPartyCoupon != null) {
       data['thirdPartyCoupon'] =
-          this.thirdPartyCoupon!.map((v) => v.toJson()).toList();
+          thirdPartyCoupon!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -200,57 +200,56 @@ class CashbackService {
     serviceImageUrl = json['service_image_url'];
     serviceDetailUrl = json['service_detail_url'];
     discountedPrice = json['discounted_price'];
-    category = json['category'] != null
-        ? new Category.fromJson(json['category'])
-        : null;
+    category =
+        json['category'] != null ? Category.fromJson(json['category']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['slug'] = this.slug;
-    data['description'] = this.description;
-    data['mobile_long_description'] = this.mobileLongDescription;
-    data['mobile_long_description2'] = this.mobileLongDescription2;
-    data['mobile_long_description3'] = this.mobileLongDescription3;
-    data['mobile_long_description4'] = this.mobileLongDescription4;
-    data['long_description'] = this.longDescription;
-    data['price'] = this.price;
-    data['time'] = this.time;
-    data['sort'] = this.sort;
-    data['time_type'] = this.timeType;
-    data['discount'] = this.discount;
-    data['discount_type'] = this.discountType;
-    data['main_category_id'] = this.mainCategoryId;
-    data['category_id'] = this.categoryId;
-    data['sub_category_id'] = this.subCategoryId;
-    data['packages_id'] = this.packagesId;
-    data['location_id'] = this.locationId;
-    data['image'] = this.image;
-    data['default_image'] = this.defaultImage;
-    data['status'] = this.status;
-    data['altImage'] = this.altImage;
-    data['prefered_service'] = this.preferedService;
-    data['location_city'] = this.locationCity;
-    data['home_page'] = this.homePage;
-    data['seo_title'] = this.seoTitle;
-    data['seo_desc'] = this.seoDesc;
-    data['seo_key'] = this.seoKey;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['rating_per'] = this.ratingPer;
-    data['rating_pop'] = this.ratingPop;
-    data['inventory_id'] = this.inventoryId;
-    data['product_usage'] = this.productUsage;
-    data['scratched'] = this.scratched;
-    data['cashbackId'] = this.cashbackId;
-    data['type'] = this.type;
-    data['service_image_url'] = this.serviceImageUrl;
-    data['service_detail_url'] = this.serviceDetailUrl;
-    data['discounted_price'] = this.discountedPrice;
-    if (this.category != null) {
-      data['category'] = this.category!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['slug'] = slug;
+    data['description'] = description;
+    data['mobile_long_description'] = mobileLongDescription;
+    data['mobile_long_description2'] = mobileLongDescription2;
+    data['mobile_long_description3'] = mobileLongDescription3;
+    data['mobile_long_description4'] = mobileLongDescription4;
+    data['long_description'] = longDescription;
+    data['price'] = price;
+    data['time'] = time;
+    data['sort'] = sort;
+    data['time_type'] = timeType;
+    data['discount'] = discount;
+    data['discount_type'] = discountType;
+    data['main_category_id'] = mainCategoryId;
+    data['category_id'] = categoryId;
+    data['sub_category_id'] = subCategoryId;
+    data['packages_id'] = packagesId;
+    data['location_id'] = locationId;
+    data['image'] = image;
+    data['default_image'] = defaultImage;
+    data['status'] = status;
+    data['altImage'] = altImage;
+    data['prefered_service'] = preferedService;
+    data['location_city'] = locationCity;
+    data['home_page'] = homePage;
+    data['seo_title'] = seoTitle;
+    data['seo_desc'] = seoDesc;
+    data['seo_key'] = seoKey;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['rating_per'] = ratingPer;
+    data['rating_pop'] = ratingPop;
+    data['inventory_id'] = inventoryId;
+    data['product_usage'] = productUsage;
+    data['scratched'] = scratched;
+    data['cashbackId'] = cashbackId;
+    data['type'] = type;
+    data['service_image_url'] = serviceImageUrl;
+    data['service_detail_url'] = serviceDetailUrl;
+    data['discounted_price'] = discountedPrice;
+    if (category != null) {
+      data['category'] = category!.toJson();
     }
     return data;
   }
@@ -300,19 +299,19 @@ class Category {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['main_category_id'] = this.mainCategoryId;
-    data['name'] = this.name;
-    data['slug'] = this.slug;
-    data['image'] = this.image;
-    data['status'] = this.status;
-    data['sort_order'] = this.sortOrder;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['rating_per'] = this.ratingPer;
-    data['rating_pop'] = this.ratingPop;
-    data['category_image_url'] = this.categoryImageUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['main_category_id'] = mainCategoryId;
+    data['name'] = name;
+    data['slug'] = slug;
+    data['image'] = image;
+    data['status'] = status;
+    data['sort_order'] = sortOrder;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['rating_per'] = ratingPer;
+    data['rating_pop'] = ratingPop;
+    data['category_image_url'] = categoryImageUrl;
     return data;
   }
 }
@@ -336,12 +335,12 @@ class Cashback {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['cashbackId'] = this.cashbackId;
-    data['amount'] = this.amount;
-    data['unit'] = this.unit;
-    data['scratched'] = this.scratched;
-    data['type'] = this.type;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cashbackId'] = cashbackId;
+    data['amount'] = amount;
+    data['unit'] = unit;
+    data['scratched'] = scratched;
+    data['type'] = type;
     return data;
   }
 }
@@ -414,27 +413,27 @@ class ThirdPartyCoupon {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['start_date_time'] = this.startDateTime;
-    data['end_date_time'] = this.endDateTime;
-    data['uses_limit'] = this.usesLimit;
-    data['used_time'] = this.usedTime;
-    data['amount'] = this.amount;
-    data['percent'] = this.percent;
-    data['minimum_purchase_amount'] = this.minimumPurchaseAmount;
-    data['days'] = this.days;
-    data['status'] = this.status;
-    data['description'] = this.description;
-    data['new_users'] = this.newUsers;
-    data['visibility'] = this.visibility;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['cashbackId'] = this.cashbackId;
-    data['cashbackName'] = this.cashbackName;
-    data['scratched'] = this.scratched;
-    data['type'] = this.type;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['start_date_time'] = startDateTime;
+    data['end_date_time'] = endDateTime;
+    data['uses_limit'] = usesLimit;
+    data['used_time'] = usedTime;
+    data['amount'] = amount;
+    data['percent'] = percent;
+    data['minimum_purchase_amount'] = minimumPurchaseAmount;
+    data['days'] = days;
+    data['status'] = status;
+    data['description'] = description;
+    data['new_users'] = newUsers;
+    data['visibility'] = visibility;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['cashbackId'] = cashbackId;
+    data['cashbackName'] = cashbackName;
+    data['scratched'] = scratched;
+    data['type'] = type;
     return data;
   }
 }

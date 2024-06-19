@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:glamcode/data/model/auth.dart';
-import 'package:glamcode/generated/assets.dart';
-import 'package:glamcode/util/dimensions.dart';
 import 'package:glamcode/view/screens/profile/widget/edit_profile.dart';
 
 import '../../../../data/model/user.dart';
@@ -62,8 +60,8 @@ class ProfileCard extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       color: Colors.amberAccent,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
+                      child: const Padding(
+                        padding: EdgeInsets.only(
                             left: 35, right: 35, top: 10, bottom: 10),
                         child: Text(
                           "Edit Profile",

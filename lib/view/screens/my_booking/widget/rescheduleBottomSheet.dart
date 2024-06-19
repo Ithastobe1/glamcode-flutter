@@ -142,7 +142,7 @@ class _RecheduleBottomSheetState extends State<RecheduleBottomSheet> {
                                   datetimetopass =
                                       "${slotArray[index].date} ${slotArray[index].otherDate}";
                                 });
-                                log("${timeSlot}");
+                                log(timeSlot);
                                 log("The date time to pass $datetimetopass");
                               },
                               // child: timeSlot == "${(slotArray[index].date)}${slotArray[index].slotStartTime}"
@@ -169,7 +169,7 @@ class _RecheduleBottomSheetState extends State<RecheduleBottomSheet> {
                                           ),
                                         ))
                                   : const Card(
-                                      color: const Color(0xFFd9bef4),
+                                      color: Color(0xFFd9bef4),
                                       child: Center(
                                           child: Text(
                                         // (slotArray[index]
@@ -195,10 +195,6 @@ class _RecheduleBottomSheetState extends State<RecheduleBottomSheet> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: CupertinoButton(
-              child: Text(
-                "Reschedule",
-                style: TextStyle(color: Colors.white),
-              ),
               onPressed: () {
                 if (datetimetopass != null) {
                   DioClient.instance.cancelReschedule(
@@ -217,12 +213,16 @@ class _RecheduleBottomSheetState extends State<RecheduleBottomSheet> {
                       context,
                       MaterialPageRoute(
                           builder: ((context) =>
-                              DashboardScreen(pageIndex: 2))));
+                              const DashboardScreen(pageIndex: 2))));
                 }
               },
               color: (datetimetopass != null)
-                  ? Color.fromARGB(255, 2, 195, 50)
-                  : Colors.white),
+                  ? const Color.fromARGB(255, 2, 195, 50)
+                  : Colors.white,
+              child: const Text(
+                "Reschedule",
+                style: TextStyle(color: Colors.white),
+              )),
         ),
       ],
     );

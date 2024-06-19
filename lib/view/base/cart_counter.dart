@@ -32,7 +32,7 @@ class _CartCounterState extends State<CartCounter> {
           return (state.cart.items.containsKey(widget.servicePackage) == false)
               ? SizedBox(
                   child: Container(
-                    width: 70,
+                    width: 90,
                     height: 30,
                     decoration: BoxDecoration(
                         // border: Border.all(color: Colors.grey),
@@ -55,11 +55,15 @@ class _CartCounterState extends State<CartCounter> {
                     child: OutlinedButton(
                       style: ButtonStyle(
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          side: MaterialStateProperty.all(
-                            const BorderSide(color: Colors.transparent),
+                          side: WidgetStateProperty.all(
+                            const BorderSide(
+                              color: Colors.transparent,
+                            ),
                           ),
+                          shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
                           splashFactory: InkRipple.splashFactory,
-                          backgroundColor: MaterialStateProperty.all(
+                          backgroundColor: WidgetStateProperty.all(
                             Colors.white,
                           )),
                       onPressed: () {
@@ -73,7 +77,7 @@ class _CartCounterState extends State<CartCounter> {
                         "ADD",
                         style: TextStyle(
                             color: const Color(0xFF882EDF),
-                            fontSize: Dimensions.fontSizeLarge),
+                            fontSize: Dimensions.fontSizeDefault),
                       ),
                     ),
                   ),

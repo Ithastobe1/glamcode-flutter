@@ -22,6 +22,7 @@ ThemeData light({Color color = const Color(0xFFFFFFFF)}) => ThemeData(
         focusedBorder: InputBorder.none,
         focusedErrorBorder: InputBorder.none,
       ),
+      cardColor: Colors.white,
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
             foregroundColor: color,
@@ -31,6 +32,8 @@ ThemeData light({Color color = const Color(0xFFFFFFFF)}) => ThemeData(
             padding: const EdgeInsets.symmetric(
                 vertical: Dimensions.PADDING_SIZE_DEFAULT),
             textStyle: TextStyle(fontSize: Dimensions.fontSizeExtraLarge)),
-      ), colorScheme: const ColorScheme.light(
-          primary: Colors.black, secondary: Colors.white).copyWith(background: const Color(0xFFFFF1F1)),
+      ),
+      colorScheme: const ColorScheme.light(
+              primary: Colors.black, secondary: Colors.white)
+          .copyWith(background: const Color(0xFFFFF1F1)),
     );

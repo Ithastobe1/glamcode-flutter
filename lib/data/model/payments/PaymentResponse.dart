@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 
 /// status : "success"
@@ -37,8 +39,8 @@ class PaymentResponseModel {
 
   String? status;
   String? message;
-  String? bookingid;
-  String? payments;
+  int? bookingid;
+  int? payments;
   String? serviceInsrted;
   Bookingget? bookingget;
   Coupon? coupon;
@@ -46,20 +48,20 @@ class PaymentResponseModel {
   PaymentResponseModel copyWith({
     String? status,
     String? message,
-    String? bookingid,
-    String? payments,
+    int? bookingid,
+    int? payments,
     String? serviceInsrted,
     Bookingget? bookingget,
     Coupon? coupon,
   }) =>
       PaymentResponseModel(
-        status: status ?? this.status,
-        message: message ?? this.message,
-        bookingid: bookingid ?? this.bookingid,
-        payments: payments ?? this.payments,
-        serviceInsrted: serviceInsrted ?? this.serviceInsrted,
-        bookingget: bookingget ?? this.bookingget,
-        coupon: coupon ?? this.coupon,
+        status: this.status,
+        message: this.message,
+        bookingid: this.bookingid,
+        payments: this.payments,
+        serviceInsrted: this.serviceInsrted,
+        bookingget: this.bookingget,
+        coupon: this.coupon,
       );
 
   Map<String, dynamic> toJson() {
@@ -168,36 +170,54 @@ Bookingget bookinggetFromJson(String str) =>
 String bookinggetToJson(Bookingget data) => json.encode(data.toJson());
 
 class Bookingget {
-  Bookingget({
-    this.id,
-    this.dealId,
-    this.dealQuantity,
-    this.couponId,
-    this.userId,
-    this.dateTime,
-    this.status,
-    this.paymentGateway,
-    this.originalAmount,
-    this.discount,
-    this.couponDiscount,
-    this.discountPercent,
-    this.taxName,
-    this.taxPercent,
-    this.taxAmount,
-    this.extraFees,
-    this.distanceFee,
-    this.amountToPay,
-    this.paymentStatus,
-    this.source,
-    this.additionalNotes,
-    this.createdAt,
-    this.updatedAt,
-    this.user,
-    this.items,
-  });
+  var dealId;
+  String? dealQuantity;
+  var couponId;
+  int? userId;
+  String? dateTime;
+  String? status;
+  String? paymentGateway;
+  int? discount;
+  int? originalAmount;
+  int? couponDiscount;
+  int? discountPercent;
+  String? taxName;
+  int? taxPercent;
+  int? extraFees;
+  int? distanceFee;
+  int? amountToPay;
+  String? paymentStatus;
+  String? source;
+  String? additionalNotes;
+  String? updatedAt;
+  String? createdAt;
+  int? id;
 
-  Bookingget.fromJson(dynamic json) {
-    id = json['id'];
+  Bookingget(
+      {this.dealId,
+      this.dealQuantity,
+      this.couponId,
+      this.userId,
+      this.dateTime,
+      this.status,
+      this.paymentGateway,
+      this.discount,
+      this.originalAmount,
+      this.couponDiscount,
+      this.discountPercent,
+      this.taxName,
+      this.taxPercent,
+      this.extraFees,
+      this.distanceFee,
+      this.amountToPay,
+      this.paymentStatus,
+      this.source,
+      this.additionalNotes,
+      this.updatedAt,
+      this.createdAt,
+      this.id});
+
+  Bookingget.fromJson(Map<String, dynamic> json) {
     dealId = json['deal_id'];
     dealQuantity = json['deal_quantity'];
     couponId = json['coupon_id'];
@@ -205,143 +225,48 @@ class Bookingget {
     dateTime = json['date_time'];
     status = json['status'];
     paymentGateway = json['payment_gateway'];
-    originalAmount = json['original_amount'];
     discount = json['discount'];
+    originalAmount = json['original_amount'];
     couponDiscount = json['coupon_discount'];
     discountPercent = json['discount_percent'];
     taxName = json['tax_name'];
     taxPercent = json['tax_percent'];
-    taxAmount = json['tax_amount'];
     extraFees = json['extra_fees'];
     distanceFee = json['distance_fee'];
     amountToPay = json['amount_to_pay'];
     paymentStatus = json['payment_status'];
     source = json['source'];
     additionalNotes = json['additional_notes'];
-    createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    user = json['user'] != null ? PaymentUser.fromJson(json['user']) : null;
-    if (json['items'] != null) {
-      items = [];
-      json['items'].forEach((v) {
-        items?.add(Items.fromJson(v));
-      });
-    }
+    createdAt = json['created_at'];
+    id = json['id'];
   }
 
-  num? id;
-  dynamic dealId;
-  num? dealQuantity;
-  dynamic couponId;
-  num? userId;
-  String? dateTime;
-  String? status;
-  String? paymentGateway;
-  num? originalAmount;
-  num? discount;
-  num? couponDiscount;
-  num? discountPercent;
-  String? taxName;
-  num? taxPercent;
-  dynamic taxAmount;
-  num? extraFees;
-  num? distanceFee;
-  num? amountToPay;
-  String? paymentStatus;
-  String? source;
-  String? additionalNotes;
-  dynamic createdAt;
-  dynamic updatedAt;
-  PaymentUser? user;
-  List<Items>? items;
-
-  Bookingget copyWith({
-    num? id,
-    dynamic dealId,
-    num? dealQuantity,
-    dynamic couponId,
-    num? userId,
-    String? dateTime,
-    String? status,
-    String? paymentGateway,
-    num? originalAmount,
-    num? discount,
-    num? couponDiscount,
-    num? discountPercent,
-    String? taxName,
-    num? taxPercent,
-    dynamic taxAmount,
-    num? extraFees,
-    num? distanceFee,
-    num? amountToPay,
-    String? paymentStatus,
-    String? source,
-    String? additionalNotes,
-    dynamic createdAt,
-    dynamic updatedAt,
-    PaymentUser? user,
-    List<Items>? items,
-  }) =>
-      Bookingget(
-        id: id ?? this.id,
-        dealId: dealId ?? this.dealId,
-        dealQuantity: dealQuantity ?? this.dealQuantity,
-        couponId: couponId ?? this.couponId,
-        userId: userId ?? this.userId,
-        dateTime: dateTime ?? this.dateTime,
-        status: status ?? this.status,
-        paymentGateway: paymentGateway ?? this.paymentGateway,
-        originalAmount: originalAmount ?? this.originalAmount,
-        discount: discount ?? this.discount,
-        couponDiscount: couponDiscount ?? this.couponDiscount,
-        discountPercent: discountPercent ?? this.discountPercent,
-        taxName: taxName ?? this.taxName,
-        taxPercent: taxPercent ?? this.taxPercent,
-        taxAmount: taxAmount ?? this.taxAmount,
-        extraFees: extraFees ?? this.extraFees,
-        distanceFee: distanceFee ?? this.distanceFee,
-        amountToPay: amountToPay ?? this.amountToPay,
-        paymentStatus: paymentStatus ?? this.paymentStatus,
-        source: source ?? this.source,
-        additionalNotes: additionalNotes ?? this.additionalNotes,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        user: user ?? this.user,
-        items: items ?? this.items,
-      );
-
   Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = id;
-    map['deal_id'] = dealId;
-    map['deal_quantity'] = dealQuantity;
-    map['coupon_id'] = couponId;
-    map['user_id'] = userId;
-    map['date_time'] = dateTime;
-    map['status'] = status;
-    map['payment_gateway'] = paymentGateway;
-    map['original_amount'] = originalAmount;
-    map['discount'] = discount;
-    map['coupon_discount'] = couponDiscount;
-    map['discount_percent'] = discountPercent;
-    map['tax_name'] = taxName;
-    map['tax_percent'] = taxPercent;
-    map['tax_amount'] = taxAmount;
-    map['extra_fees'] = extraFees;
-    map['distance_fee'] = distanceFee;
-    map['amount_to_pay'] = amountToPay;
-    map['payment_status'] = paymentStatus;
-    map['source'] = source;
-    map['additional_notes'] = additionalNotes;
-    map['created_at'] = createdAt;
-    map['updated_at'] = updatedAt;
-    if (user != null) {
-      map['user'] = user?.toJson();
-    }
-    if (items != null) {
-      map['items'] = items?.map((v) => v.toJson()).toList();
-    }
-    return map;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['deal_id'] = dealId;
+    data['deal_quantity'] = dealQuantity;
+    data['coupon_id'] = couponId;
+    data['user_id'] = userId;
+    data['date_time'] = dateTime;
+    data['status'] = status;
+    data['payment_gateway'] = paymentGateway;
+    data['discount'] = discount;
+    data['original_amount'] = originalAmount;
+    data['coupon_discount'] = couponDiscount;
+    data['discount_percent'] = discountPercent;
+    data['tax_name'] = taxName;
+    data['tax_percent'] = taxPercent;
+    data['extra_fees'] = extraFees;
+    data['distance_fee'] = distanceFee;
+    data['amount_to_pay'] = amountToPay;
+    data['payment_status'] = paymentStatus;
+    data['source'] = source;
+    data['additional_notes'] = additionalNotes;
+    data['updated_at'] = updatedAt;
+    data['created_at'] = createdAt;
+    data['id'] = id;
+    return data;
   }
 }
 

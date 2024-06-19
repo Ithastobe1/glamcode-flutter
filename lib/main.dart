@@ -35,6 +35,14 @@ Future<void> main() async {
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>()
+      ?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true,
     badge: true,
@@ -60,7 +68,7 @@ Future<void> main() async {
   DioClient dioClient = DioClient.instance;
   SharedPreferences prefs = await SharedPreferences.getInstance();
   UserRepository userRepository =
-  UserRepository(auth: auth, dioClient: dioClient);
+      UserRepository(auth: auth, dioClient: dioClient);
   ShoppingRepository shoppingRepository = ShoppingRepository(
       auth: auth, dioClient: dioClient, sharedPreferences: prefs);
   CouponRepository couponRepository = CouponRepository.instance;

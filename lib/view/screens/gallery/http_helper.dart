@@ -21,7 +21,7 @@ class HttpHelpers {
   }
 
   static getRequestWithoutToken(String url) async {
-    http.Response ?response;
+    http.Response? response;
 
     try {
       var urlUri = Uri.parse(url);
@@ -43,7 +43,7 @@ class HttpHelpers {
   }
 
   static getRequest(String url) async {
-    http.Response ?response;
+    http.Response? response;
 
     try {
       var urlUri = Uri.parse(url);
@@ -84,7 +84,7 @@ class HttpHelpers {
   }
 
   static postRequest(String url, var param) async {
-    http.Response ?response;
+    http.Response? response;
 
     try {
       var urlUri = Uri.parse(url);

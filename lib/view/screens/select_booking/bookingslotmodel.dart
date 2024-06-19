@@ -9,17 +9,17 @@ class BookingSlotModel {
     if (json['available_slots'] != null) {
       availableSlots = <AvailableSlots>[];
       json['available_slots'].forEach((v) {
-        availableSlots!.add(new AvailableSlots.fromJson(v));
+        availableSlots!.add(AvailableSlots.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.availableSlots != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (availableSlots != null) {
       data['available_slots'] =
-          this.availableSlots!.map((v) => v.toJson()).toList();
+          availableSlots!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -48,12 +48,12 @@ class AvailableSlots {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['date'] = this.date;
-    data['slot_start_time'] = this.slotStartTime;
-    data['slot_end_time'] = this.slotEndTime;
-    data['otherDate'] = this.otherDate;
-    data['is_current'] = this.isCurrent;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['date'] = date;
+    data['slot_start_time'] = slotStartTime;
+    data['slot_end_time'] = slotEndTime;
+    data['otherDate'] = otherDate;
+    data['is_current'] = isCurrent;
     return data;
   }
 }

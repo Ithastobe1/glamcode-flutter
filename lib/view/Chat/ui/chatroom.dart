@@ -1,11 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:glamcode/data/model/bookings.dart';
 import 'package:glamcode/main.dart';
 import 'package:glamcode/view/Chat/ui/model/messageModel.dart';
 import 'package:glamcode/view/Chat/ui/model/usermodel.dart';
@@ -208,7 +204,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     onPressed: () {
                       sendMessage("26.8467° N", "80.9462° E");
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.location_searching,
                       color: Colors.pink,
                     )),
@@ -216,7 +212,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   child: TextField(
                     controller: messageController,
                     maxLines: null,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none, hintText: "  Enter message"),
                   ),
                 ),
@@ -224,14 +220,14 @@ class _ChatRoomState extends State<ChatRoom> {
                     onPressed: () {
                       sendMessage("", "");
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.send,
                       color: Colors.pink,
                     )),
               ]),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           )
         ],

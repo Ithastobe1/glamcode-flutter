@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:glamcode/screen_size.dart';
 
 import '../../blocs/cart/cart_bloc.dart';
 import '../../blocs/cart_data/cart_data_bloc.dart';
 import '../../util/dimensions.dart';
-import '../screens/cart/cart_screen.dart';
 
 class BottomServiceBar extends StatelessWidget {
   const BottomServiceBar({Key? key}) : super(key: key);
@@ -21,7 +18,7 @@ class BottomServiceBar extends StatelessWidget {
               return state.cart.items.isEmpty
                   ? const SizedBox()
                   : ClipRRect(
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20)),
                       // borderRadius: BorderRadius.circular(20),
@@ -50,7 +47,7 @@ class BottomServiceBar extends StatelessWidget {
                                       : "Add Services of Rs ${context.read<CartBloc>().getUpcomingDiscount(cartState.cartData.originalAmount!).minimumPurchaseAmount! - cartState.cartData.originalAmount!} to unlock Coupon Code ${context.read<CartBloc>().getUpcomingDiscount(cartState.cartData.originalAmount!).title}",
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Colors.purple,
                                   fontSize: Dimensions.fontSizeSmall,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -61,8 +58,8 @@ class BottomServiceBar extends StatelessWidget {
                             // color: const Color(0xFFAF73E9),
                             color: Colors.white,
                             padding: const EdgeInsets.symmetric(
-                                horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                                vertical: Dimensions.PADDING_SIZE_SMALL),
+                              horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -106,11 +103,12 @@ class BottomServiceBar extends StatelessWidget {
                                       //         .withOpacity(0.8),
                                       //     shape: BoxShape.rectangle),
                                       // height: displayHeight(context) * 0.05,
-                                      width: displayWidth(context) * 0.35,
+                                      // width: displayWidth(context) * 0.35,
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                            MainAxisAlignment.end,
                                         children: [
+                                          Container(),
                                           ElevatedButton(
                                             onPressed: () {
                                               // if ((cartState.cartData.originalAmount !=null) &&(cartState.cartData.mincheck !=null)) {
@@ -158,11 +156,12 @@ class BottomServiceBar extends StatelessWidget {
                                                   // }
                                                 } else {
                                                   ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
+                                                      .showSnackBar(
+                                                          const SnackBar(
                                                     content: Text(
                                                         'Please add items worth 599 to proceed.'),
-                                                    duration: const Duration(
-                                                        seconds: 1),
+                                                    duration:
+                                                        Duration(seconds: 1),
                                                   ));
                                                 }
                                               }
@@ -172,8 +171,9 @@ class BottomServiceBar extends StatelessWidget {
                                             },
                                             style: ElevatedButton.styleFrom(
                                               foregroundColor: Colors.white,
-                                              backgroundColor: Color.fromARGB(
-                                                  255, 37, 179, 56),
+                                              backgroundColor:
+                                                  const Color.fromARGB(
+                                                      255, 37, 179, 56),
                                               // const Color(0xFF882EDF),
                                               animationDuration: const Duration(
                                                   milliseconds: 1000),

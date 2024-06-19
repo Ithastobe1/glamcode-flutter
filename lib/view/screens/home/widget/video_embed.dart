@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:glamcode/util/dimensions.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoEmbed extends StatefulWidget {
@@ -32,13 +31,14 @@ class _VideoEmbedState extends State<VideoEmbed> {
         mute: true,
         showControls: false,
       ),
-    )..onInit = () {
-        if (autoPlay) {
-          _controller.loadVideoByUrl(mediaContentUrl: widget.url);
-        } else {
-          _controller.cueVideoByUrl(mediaContentUrl: widget.url);
-        }
-      };
+    );
+    // ..onInit = () {
+    //     if (autoPlay) {
+    //       _controller.loadVideoByUrl(mediaContentUrl: widget.url);
+    //     } else {
+    //       _controller.cueVideoByUrl(mediaContentUrl: widget.url);
+    //     }
+    //   };
   }
 
   @override
@@ -48,8 +48,8 @@ class _VideoEmbedState extends State<VideoEmbed> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-        const  Padding(
-            padding:  EdgeInsets.symmetric(vertical: 18),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 18),
             child: Text(
               " Thoughtful Curations",
               style: TextStyle(

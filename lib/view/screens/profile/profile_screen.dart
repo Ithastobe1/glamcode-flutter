@@ -1,16 +1,12 @@
 import 'dart:io' show Platform;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:glamcode/blocs/auth/auth_bloc.dart';
 import 'package:glamcode/home.dart';
-import 'package:glamcode/util/dimensions.dart';
 import 'package:glamcode/view/screens/profile/widget/profile_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../util/delete_my_account.dart';
-import '../dashboard/dashboard_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);

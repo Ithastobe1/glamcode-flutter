@@ -36,60 +36,62 @@ Widget customerTestimonialCard(Reviews item) {
     padding:
         const EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_DEFAULT),
     child: Container(
-      padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+      //padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT1),
       decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(20))),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL +
-                Dimensions.PADDING_SIZE_EXTRA_SMALL),
-            child: CircleAvatar(
-              radius: 30,
-              backgroundImage:
-                  cachedNetworkImageProvider(item.reviewsImageUrl ?? ""),
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(
-                            Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                        child: Text(
-                          item.name ?? "User",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w900, fontSize: 15),
-                        ),
-                      ),
-                      const GoldenText(text: "  ☆  4.5 "),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(
-                        Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                    child: Text(
-                      item.description ?? "",
-                      maxLines: 3,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500, color: Colors.black),
-                    ),
-                  )
-                ],
+      child: Center(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL +
+                  Dimensions.PADDING_SIZE_EXTRA_SMALL),
+              child: CircleAvatar(
+                radius: 30,
+                backgroundImage:
+                    cachedNetworkImageProvider(item.reviewsImageUrl ?? ""),
               ),
             ),
-          )
-        ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(
+                              Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                          child: Text(
+                            item.name ?? "User",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w900, fontSize: 15),
+                          ),
+                        ),
+                        const GoldenText(text: "  ☆  4.5 "),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(
+                          Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                      child: Text(
+                        item.description ?? "",
+                        maxLines: 3,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500, color: Colors.black),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     ),
   );

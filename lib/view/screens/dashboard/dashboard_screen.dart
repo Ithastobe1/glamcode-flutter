@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +10,9 @@ import 'package:glamcode/view/screens/dashboard/widget/bottom_nav_item.dart';
 import 'package:glamcode/view/screens/home/home_screen.dart';
 import 'package:glamcode/view/screens/location/location_screen.dart';
 import 'package:glamcode/view/screens/my_booking/my_booking_screen.dart';
-import 'package:glamcode/view/screens/notification/notification_screen.dart';
 import 'package:glamcode/view/screens/profile/profile_screen.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:version/version.dart';
 import '../../../util/custom_drawer.dart';
-import 'package:launch_review/launch_review.dart';
 
 class DashboardScreen extends StatefulWidget {
   final int pageIndex;
@@ -44,8 +39,6 @@ class DashboardScreenState extends State<DashboardScreen> {
   bool _canExit = kIsWeb ? true : false;
   late SharedPreferences prefs;
   late bool isCitySelected;
-
-
 
   @override
   void initState() {

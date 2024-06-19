@@ -47,7 +47,7 @@ class Services {
   String? discountType;
   int? mainCategoryId;
   int? categoryId;
-  String? subCategoryId;
+  dynamic subCategoryId;
   int? packagesId;
   int? locationId;
   List<String>? image;
@@ -63,8 +63,8 @@ class Services {
   String? updatedAt;
   String? ratingPer;
   int? ratingPop;
-  String? inventoryId;
-  String? productUsage;
+  dynamic inventoryId;
+  dynamic productUsage;
   String? serviceImageUrl;
   String? serviceDetailUrl;
   int? discountedPrice;
@@ -109,7 +109,8 @@ class Services {
       this.serviceImageUrl,
       this.serviceDetailUrl,
       this.discountedPrice,
-      this.category});
+      this.category,
+      });
 
   Services.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -195,9 +196,9 @@ class Services {
     data['service_image_url'] = serviceImageUrl;
     data['service_detail_url'] = serviceDetailUrl;
     data['discounted_price'] = discountedPrice;
-    if (category != null) {
-      data['category'] = category!.toJson();
-    }
+    // if (category != null) {
+    //   data['category'] = category!.toJson();
+    // }
     return data;
   }
 }

@@ -20,8 +20,6 @@
 <string>9eef85e56cb1310f8351f64ce7c67803</string>
 <key>FacebookDisplayName</key>
 <string>Glamcode</string>
-
-
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

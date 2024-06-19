@@ -38,10 +38,10 @@ class _CouponScreenState extends State<CouponScreen> {
         ),
         body: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               "B E S T  O F F E R S  F O R  Y O U",
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
@@ -125,14 +125,14 @@ Widget couponsTile(CouponData couponData, bool isApplied, BuildContext context,
                     couponData.percent == 0
                         ? "Rs ${couponData.amount}" " OFF"
                         : "${couponData.percent}%" " OFF",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Text(
                     "  Minimum Purchase Amount ₹${couponData.minimumPurchaseAmount}",
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Color.fromARGB(255, 3, 63, 154),
                         fontSize: 13,
                         fontWeight: FontWeight.w500),
@@ -142,26 +142,26 @@ Widget couponsTile(CouponData couponData, bool isApplied, BuildContext context,
             ),
             Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Card(
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(width: 1, color: Colors.black12)),
+                      side: const BorderSide(width: 1, color: Colors.black12)),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "${couponData.title.toString().toUpperCase()}",
+                      couponData.title.toString().toUpperCase(),
                       style:
-                          TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                          const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
               ],
             ),
-            Divider(),
+            const Divider(),
             SizedBox(
               height: 52,
               child: Center(
@@ -204,7 +204,7 @@ Widget couponsTile(CouponData couponData, bool isApplied, BuildContext context,
                           "T A P  T O  A P P L Y ",
                           style: TextStyle(
                               fontSize: Dimensions.fontSizeExtraLarge,
-                              color: Color.fromARGB(255, 3, 63, 154),
+                              color: const Color.fromARGB(255, 3, 63, 154),
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.w500),
                         ),

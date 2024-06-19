@@ -156,15 +156,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       buttonText:
                           'Rs. ${cartState.cartData.amountToPay} SLIDE TO PAYMENT',
                       buttonWidget: Container(
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_forward_ios_rounded,
                           color: Colors.grey,
                         ),
                       ),
-                      activeColor: Color(0xFF009C41),
+                      activeColor: const Color(0xFF009C41),
                       isFinished: isFinished,
                       onWaitingProcess: () {
-                        Future.delayed(Duration(seconds: 3), () {
+                        Future.delayed(const Duration(seconds: 3), () {
                           setState(() {
                             isFinished = true;
                           });
@@ -273,6 +273,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void _bookOrder(CartData cartData, String s, String amount) {
     final facebookAppEvents = FacebookAppEvents();
     paymentRepository.bookingsApi(cartData, "cash").then((result) {
+      print(result);
       if (result != null) {
         context.read<CartBloc>().add(CartCleared());
         facebookAppEvents.logPurchase(

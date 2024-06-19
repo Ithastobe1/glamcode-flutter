@@ -95,7 +95,6 @@ class PaymentRepository {
       BookingDataServicesModel bookingDataServicesModel =
           BookingDataServicesModel(
               serviceData: serviceDataList, addOn: addonDataList);
-      print(bookingDataModel.couponId);
       Map<String, dynamic> bookingDataHead = {
         "bookingData": [bookingDataModel.toJson()],
         "paymentsData": [paymentsDataModel.toJson()],
@@ -106,6 +105,7 @@ class PaymentRepository {
       print("Check For Json data while in payment repositry");
       print(jsonData.toString());
       final response = await dioClient.makePayment(jsonData);
+
       return response;
     } catch (e) {
       print(e);

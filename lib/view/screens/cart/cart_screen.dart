@@ -127,11 +127,18 @@ class _CartScreenState extends State<CartScreen> {
             addressData = snapshot.data!;
             List<AddressDetails> addressList = addressData.addressDetails ?? [];
             AddressDetails? primaryAddressDetails;
-            for (var element in addressList) {
-              if (element.isPrimary != null && element.isPrimary!) {
-                primaryAddressDetails = element;
+            if (addressList != []) {
+              for (var element in addressList) {
+                if (element.isPrimary == true) {
+                  print("data true");
+                  primaryAddressDetails = element;
+                  debugPrint(primaryAddressDetails.address);
+                } else {
+                  // primaryAddressDetails = addressList[0];
+                }
               }
             }
+
             return BlocBuilder<CartBloc, CartState>(
               builder: (context, state) {
                 if (state is CartLoading) {
@@ -160,14 +167,14 @@ class _CartScreenState extends State<CartScreen> {
                                       // const CustomDivider(),
 
                                       primaryAddressDetails != null ||
-                                              addressList[0].address != null
+                                              addressList.isNotEmpty
                                           ? InkWell(
-                                              onTap: () {
+                                              onTap: () async {
                                                 // Navigator.of(context).push(
                                                 //     MaterialPageRoute(
                                                 //         builder: (context) =>
                                                 //             const AddressDetailsScreen()));
-                                                showModalBottomSheet(
+                                                await showModalBottomSheet(
                                                     isScrollControlled: true,
                                                     useSafeArea: true,
                                                     enableDrag: true,
@@ -189,9 +196,14 @@ class _CartScreenState extends State<CartScreen> {
                                                                   context,
                                                               StateSetter
                                                                   setstate) {
-                                                        return AddressDetailsScreen();
+                                                        return const AddressDetailsScreen();
                                                       });
                                                     });
+
+                                                setState(() {
+                                                  _future = DioClient.instance
+                                                      .getAddress();
+                                                });
                                               },
                                               child: ListTile(
                                                 shape:
@@ -322,8 +334,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 child: Container(
                                                     color: Colors.white,
                                                     padding: const EdgeInsets
-                                                            .all(
-                                                        Dimensions
+                                                        .all(Dimensions
                                                             .PADDING_SIZE_DEFAULT),
                                                     child: Row(
                                                       mainAxisAlignment:
@@ -375,6 +386,7 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                           bottomNavigationBar: cart.isNotEmpty
                               ? BottomAppBar(
+                                  surfaceTintColor: Colors.white,
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -402,16 +414,22 @@ class _CartScreenState extends State<CartScreen> {
                                             Dimensions.PADDING_SIZE_SMALL),
                                         child: TextButton(
                                             style: TextButton.styleFrom(
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5))),
                                                 backgroundColor:
                                                     const Color(0xFFA854FC),
                                                 minimumSize: const Size(
                                                     double.infinity,
                                                     Dimensions
                                                         .PADDING_SIZE_DEFAULT),
-                                                padding: const EdgeInsets
-                                                        .symmetric(
-                                                    vertical: Dimensions
-                                                        .PADDING_SIZE_DEFAULT),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: Dimensions
+                                                            .PADDING_SIZE_DEFAULT),
                                                 textStyle: TextStyle(
                                                     fontSize: Dimensions
                                                         .fontSizeExtraLarge)),
@@ -434,19 +452,8 @@ class _CartScreenState extends State<CartScreen> {
                                                 if (cartState.cartData
                                                         .originalAmount! >=
                                                     599) {
-                                                  // Navigator.push(
-                                                  //     context,
-                                                  //     MaterialPageRoute(
-                                                  //         builder: (context) =>
-                                                  //             SearchLocationScreen(
-                                                  //               edit: false,
-                                                  //               addressDetails:
-                                                  //                   AddressDetails(),
-                                                  //             )));
                                                   if (primaryAddressDetails !=
                                                       null) {
-                                                    // Navigator.pushNamed(
-                                                    //     context, '/payment');
                                                     Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
@@ -474,8 +481,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 }
                                               }
                                             },
-                                            child:
-                                                const Text("Procees to Pay")),
+                                            child: const Text("Process to Pay")),
                                       ))
                                     ],
                                   ),
@@ -545,14 +551,20 @@ class _PriceDetailsState extends State<PriceDetails> {
                               "  Use Wallet (Glam Coin - ${state.cartData.walletBalance})",
                               style: TextStyle(
                                   fontSize: Dimensions.fontSizeLarge)),
-                          Checkbox(
-                            checkColor: const Color(0xFF882EDF),
-                            value: state.cartData.isWalletUsed,
-                            onChanged: (newValue) {
-                              context
-                                  .read<CartDataBloc>()
-                                  .add(CartDataUpdateWallet());
-                            },
+                          Theme(
+                            data: Theme.of(context).copyWith(
+                              unselectedWidgetColor: Colors.white,
+                            ),
+                            child: Checkbox(
+                              activeColor: Colors.white,
+                              checkColor: const Color(0xFF882EDF),
+                              value: !state.cartData.isWalletUsed,
+                              onChanged: (newValue) {
+                                context
+                                    .read<CartDataBloc>()
+                                    .add(CartDataUpdateWallet());
+                              },
+                            ),
                           ),
                         ]),
                   ),
@@ -593,12 +605,17 @@ class _PriceDetailsState extends State<PriceDetails> {
                               );
                             },
                             style: TextButton.styleFrom(
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5))),
                                 foregroundColor: Colors.white,
                                 backgroundColor: couponApplied
                                     ? Colors.green
                                     : const Color(0xFF882EDF),
+                                // maximumSize: const Size(
+                                //     200, Dimensions.PADDING_SIZE_DEFAULT),
                                 minimumSize: const Size(double.infinity,
-                                    Dimensions.PADDING_SIZE_LARGE),
+                                    Dimensions.PADDING_SIZE_DEFAULT),
                                 padding: const EdgeInsets.symmetric(
                                     vertical: Dimensions.PADDING_SIZE_DEFAULT),
                                 textStyle: TextStyle(

@@ -1,23 +1,19 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:glamcode/controller/location_controller.dart';
 import 'package:glamcode/data/model/address_details_model.dart';
 import 'package:glamcode/data/model/user.dart';
 import 'package:glamcode/data/model/useraddressmodel.dart';
-import 'package:glamcode/screen_size.dart';
 import 'package:glamcode/view/screens/gallery/http_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:glamcode/view/screens/home/search_srceen.dart';
-import 'package:glamcode/view/screens/location/location_screen.dart';
 import 'package:glamcode/view/screens/notification/notification_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:glamcode/data/model/home_page.dart';
-import 'package:glamcode/util/dimensions.dart';
 import 'package:glamcode/view/base/bottomServiceBar.dart';
 import 'package:glamcode/view/base/error_screen.dart';
 import 'package:glamcode/view/base/loading_screen.dart';
@@ -28,13 +24,13 @@ import 'package:glamcode/view/screens/home/widget/services_grid.dart';
 import 'package:glamcode/view/screens/home/widget/slider.dart';
 import 'package:glamcode/view/screens/home/widget/video_embed.dart';
 import 'package:location_geocoder/location_geocoder.dart';
-import 'package:location_geocoder/services/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/api/api_helper.dart';
 import '../../../data/model/auth.dart';
 import '../cart/cart_screen.dart';
 import 'map_location/searchLocationMap.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -58,10 +54,19 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getCurrentPosition();
+    });
+    getToken();
+    rePermission();
     _future = DioClient.instance.getHomePage();
     getUserAddress();
     getPrefs();
-    getCurrentPosition();
+  }
+
+  Future<void> rePermission() async {
+    // retrieve permissions
+    await [Permission.notification].request();
   }
 
   UserAddressModels? userAddressModels;
@@ -125,7 +130,6 @@ class _HomeScreenState extends State<HomeScreen>
   late LocatitonGeocoder geocoder = LocatitonGeocoder(apiKey);
   void getCurrentPosition() async {
     LocationPermission permission = await Geolocator.checkPermission();
-
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
       print("permissions not given");
@@ -133,8 +137,8 @@ class _HomeScreenState extends State<HomeScreen>
     } else {
       Position currentPosition = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
-      print("Latittude: " + currentPosition.latitude.toString());
-      print("Longitude:" + currentPosition.longitude.toString());
+      print("Latittude: ${currentPosition.latitude}");
+      print("Longitude:${currentPosition.longitude}");
       final coordinates =
           Coordinates(currentPosition.latitude, currentPosition.longitude);
       final address = await geocoder.findAddressesFromCoordinates(coordinates);
@@ -152,9 +156,19 @@ class _HomeScreenState extends State<HomeScreen>
           longitude: currentPosition.longitude,
           mobileNumber: user.mobile,
           callingCode: user.callingCode);
-      DioClient.instance.addAddress(address1);
+      DioClient.instance.addAddress(address1).then((value) {
+        DioClient.instance.setPrimaryAddress(value!);
+      });
       log(user.id.toString());
     }
+  }
+
+  getToken() async {
+    await FirebaseMessaging.instance.getToken().then((value) {
+      print(
+          "toke....tp-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=->$value");
+      DioClient.instance.fireToken(value);
+    });
   }
 
   @override
@@ -189,68 +203,6 @@ class _HomeScreenState extends State<HomeScreen>
                         : CustomScrollView(
                             physics: const BouncingScrollPhysics(),
                             slivers: <Widget>[
-                              // SliverAppBar(
-                              //   floating: true,
-                              //   backgroundColor: const Color(0xFFFFF1F1),
-                              //   elevation: 0,
-                              //   iconTheme: IconThemeData(
-                              //       color: const Color(0xFF882EDF),
-                              //       size: Dimensions.fontSizeOverLarge),
-                              //   toolbarHeight:
-                              //       Dimensions.fontSizeOverLarge * 1.5,
-                              //   // pinned: true,
-                              //   centerTitle: true,
-                              //   title: Align(
-                              //     alignment: Alignment.topLeft,
-                              //     // ignore: unnecessary_null_comparison
-                              //     child: Text(
-                              //       userAddressModels!.address?.toString() ??
-                              //           BlocProvider.of<LocationController>(
-                              //                   context,
-                              //                   listen: true)
-                              //               .state ??
-                              //           "",
-                              //       textAlign: TextAlign.center,
-                              //       style: TextStyle(
-                              //           fontSize: Dimensions.fontSizeLarge,
-                              //           color: const Color(0xFF882EDF),
-                              //           backgroundColor:
-                              //               const Color(0xFFFFF1F1),
-                              //           fontWeight: FontWeight.normal),
-                              //       overflow: TextOverflow.ellipsis,
-                              //     ),
-                              //   ),
-                              //   titleSpacing: 0,
-                              //   leading: InkWell(
-                              //     onTap: () async {
-                              //       Navigator.pushReplacement(
-                              //           context,
-                              //           MaterialPageRoute(
-                              //               builder: (context) =>
-                              //                   const SelectLocationScreen()));
-                              //     },
-                              //     child: const Icon(Icons.location_on_rounded),
-                              //   ),
-                              //   actions: [
-                              //     InkWell(
-                              //       onTap: () {
-                              //         Navigator.push(
-                              //             context,
-                              //             MaterialPageRoute(
-                              //                 builder: (context) =>
-                              //                     const CartScreen()));
-                              //         // Navigator.of(context).pushNamed('/cart');
-                              //       },
-                              //       child: const Padding(
-                              //         padding: EdgeInsets.symmetric(
-                              //             horizontal:
-                              //                 Dimensions.PADDING_SIZE_SMALL),
-                              //         child: Icon(Icons.shopping_cart_rounded),
-                              //       ),
-                              //     ),
-                              //     // TextField(),
-                              // ],
-                              // ),
                               SliverAppBar(
                                 elevation: 0,
                                 floating: true,
@@ -297,14 +249,14 @@ class _HomeScreenState extends State<HomeScreen>
                                                     ),
                                                   ),
                                                 ),
-                                                Text(
+                                                const Text(
                                                   "    Search for ",
                                                   style: TextStyle(
                                                       color: Colors.black54,
                                                       fontSize: 10),
                                                 ),
                                                 DefaultTextStyle(
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         color: Colors.black54,
                                                         fontSize: 10),
                                                     child: AnimatedTextKit(
@@ -313,88 +265,28 @@ class _HomeScreenState extends State<HomeScreen>
                                                         animatedTexts: [
                                                           TyperAnimatedText(
                                                               "Waxing",
-                                                              speed: Duration(
+                                                              speed: const Duration(
                                                                   milliseconds:
                                                                       80)),
                                                           TyperAnimatedText(
                                                               "Facial",
-                                                              speed: Duration(
+                                                              speed: const Duration(
                                                                   milliseconds:
                                                                       80)),
                                                           TyperAnimatedText(
                                                               "Mani-Pedi",
-                                                              speed: Duration(
+                                                              speed: const Duration(
                                                                   milliseconds:
                                                                       80)),
                                                         ])),
-                                                SizedBox(
-                                                  width: 90,
-                                                ),
+                                                // SizedBox(
+                                                //   width: 90,
+                                                // ),
                                               ],
                                             ),
                                           ),
                                         ),
                                       )),
-                                  // title: Container(
-                                  //     color: const Color(0xFFFFF1F1),
-                                  //     child: GestureDetector(
-                                  //         onTap: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) =>
-                                  //             const SearchScreen(
-
-                                  //                 // searchModel:
-                                  //                 //     SearchModel(),
-                                  //                 )));
-                                  //         },
-                                  //         child: Container(
-                                  //             decoration: BoxDecoration(
-                                  //                 borderRadius:
-                                  //                     BorderRadius.circular(12),
-                                  //                 border: Border.all(
-                                  //                     width: 1,
-                                  //                     color: Colors.grey)),
-                                  //             width: displayWidth(context),
-                                  //             child: Row(
-                                  //               children: [
-                                  // Text(
-                                  //   "    Search here...",
-                                  //   style: TextStyle(
-                                  //       color: Colors.black54),
-                                  // ),
-                                  // Align(
-                                  //   alignment:
-                                  //       Alignment.centerRight,
-                                  //   child: Padding(
-                                  //     padding: EdgeInsets.only(
-                                  //         left: 0),
-                                  //     child: Icon(Icons.search),
-                                  //   ),
-                                  //                 ),
-                                  //               ],
-                                  //             )))
-                                  //   child: TextField(
-                                  //     enableInteractiveSelection:
-                                  //         false, // will disable paste operation
-
-                                  //     // controller: searchController,
-
-                                  //     controller: searchController,
-                                  //     decoration:
-                                  //         const InputDecoration(
-                                  //       prefixIcon:
-                                  //           Icon(Icons.search),
-                                  //       hintText:
-                                  //           "Search Products Name",
-                                  //       // labelText:
-                                  //       //     "Search Products Name",
-                                  //       border: InputBorder.none,
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                  // ),
                                   background: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -427,7 +319,11 @@ class _HomeScreenState extends State<HomeScreen>
                                                                     edit: false,
                                                                     addressDetails:
                                                                         AddressDetails(),
-                                                                  )));
+                                                                  ))).then(
+                                                          (value) {
+                                                        getUserAddress();
+                                                        setState(() {});
+                                                      });
                                                     },
                                                     child: Row(
                                                       children: [
@@ -465,8 +361,8 @@ class _HomeScreenState extends State<HomeScreen>
                                                       ],
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                    width: 20,
+                                                  const SizedBox(
+                                                    width: 40,
                                                   ),
                                                   Row(
                                                     children: [
@@ -485,13 +381,13 @@ class _HomeScreenState extends State<HomeScreen>
                                                                       ((context) =>
                                                                           const CartScreen())));
                                                         },
-                                                        child: Icon(
+                                                        child: const Icon(
                                                           Icons
                                                               .shopping_cart_outlined,
                                                           size: 20,
                                                         ),
                                                       ),
-                                                      SizedBox(
+                                                      const SizedBox(
                                                         width: 30,
                                                       ),
 
@@ -502,9 +398,9 @@ class _HomeScreenState extends State<HomeScreen>
                                                               MaterialPageRoute(
                                                                   builder:
                                                                       ((context) =>
-                                                                          NotificationScreen())));
+                                                                          const NotificationScreen())));
                                                         },
-                                                        child: Icon(
+                                                        child: const Icon(
                                                           Icons
                                                               .notifications_outlined,
                                                           size: 20,
@@ -513,7 +409,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                     ],
                                                   )
                                                 ]),
-                                                SizedBox(
+                                                const SizedBox(
                                                   height: 7,
                                                 ),
                                               ],
@@ -525,7 +421,6 @@ class _HomeScreenState extends State<HomeScreen>
                                   ),
                                 ),
                               ),
-
                               SliverToBoxAdapter(
                                 child: Wrap(
                                   children: [

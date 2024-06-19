@@ -46,7 +46,7 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
 
   CameraPosition? kGooglePlex;
 
-  List<Marker> _marker = <Marker>[];
+  final List<Marker> _marker = <Marker>[];
 
   Future<Position> locateMe() async {
     bool serviceEnabled;
@@ -116,11 +116,11 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.backspace)),
-        title: Text("Google Map"),
+            icon: const Icon(Icons.backspace)),
+        title: const Text("Google Map"),
       ),
       body: (widget.address == null)
-          ? CircularProgressIndicator()
+          ? const CircularProgressIndicator()
           : SafeArea(
               child: Stack(children: [
                 GoogleMap(
@@ -197,7 +197,7 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                              color: Colors.pink,
+                              color: const Color(0xFFA854FC),
                               borderRadius: BorderRadius.circular(12)),
                           height: 40,
                           width: 5,
@@ -221,7 +221,7 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
                   left: 0.0,
                   right: 0.0,
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8.0),
@@ -230,7 +230,7 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
                           color: Colors.black.withOpacity(0.1),
                           spreadRadius: 1,
                           blurRadius: 5,
-                          offset: Offset(0, 3),
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
@@ -278,7 +278,8 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
                                       child: Text(
                                         "CHANGE",
                                         style: TextStyle(
-                                            fontSize: 13, color: Colors.pink),
+                                            fontSize: 13,
+                                            color: Color(0xFFA854FC)),
                                       ))),
                             )
                           ],
@@ -293,18 +294,15 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
                         ),
                         const SizedBox(height: 18.0),
                         Padding(
-                          padding: EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           child: CupertinoButton(
-                            child: Text(
-                              "CONFIRM LOCATION",
-                            ),
                             onPressed: () {
                               showModalBottomSheet(
                                   isScrollControlled: true,
                                   useSafeArea: true,
                                   enableDrag: true,
                                   showDragHandle: true,
-                                  shape: RoundedRectangleBorder(
+                                  shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(12),
                                           topRight: Radius.circular(12))),
@@ -323,7 +321,10 @@ class _GetUserLocationScreenState extends State<GetUserLocationScreen> {
                                     });
                                   });
                             },
-                            color: Colors.pink,
+                            color: const Color(0xFFA854FC),
+                            child: const Text(
+                              "CONFIRM LOCATION",
+                            ),
                           ),
                         )
                       ],

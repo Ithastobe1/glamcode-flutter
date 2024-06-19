@@ -62,7 +62,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Search Service"),
+          title: const Text("Search Service"),
         ),
         body: searchModel == null
             ? const Center(child: LoadingScreen())
